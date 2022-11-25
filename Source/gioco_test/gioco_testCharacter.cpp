@@ -141,3 +141,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+void Agioco_testCharacter::ShiftKeyDown()
+{
+
+}
