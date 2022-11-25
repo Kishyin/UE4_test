@@ -59,6 +59,7 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &Agioco_testCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &Agioco_testCharacter::MoveRight);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &Agioco_testCharacter::ShiftKeyDown);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
