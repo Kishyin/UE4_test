@@ -143,5 +143,5 @@ void Agioco_testCharacter::MoveRight(float Value)
 }
 void Agioco_testCharacter::ShiftKeyDown()
 {
-
+	bShiftKeyDown = true;
 }
