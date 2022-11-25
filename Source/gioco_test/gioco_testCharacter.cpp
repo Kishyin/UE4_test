@@ -145,3 +145,7 @@ void Agioco_testCharacter::ShiftKeyDown()
 {
 	bShiftKeyDown = true;
 }
+void Agioco_testCharacter::ShiftKeyUp()
+{
+
+}
