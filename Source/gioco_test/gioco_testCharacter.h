@@ -25,6 +25,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
 
+	bool bShiftKeyDown;
+
 	//Press down to enable sprinting
 	void ShiftKeyDown();
 
