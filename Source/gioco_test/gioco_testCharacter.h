@@ -28,6 +28,9 @@ public:
 	//Press down to enable sprinting
 	void ShiftKeyDown();
 
+	//Released to stop sprinting
+	void ShiftKeyUp();
+
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
