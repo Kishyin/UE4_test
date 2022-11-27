@@ -20,6 +20,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
+	RunningSpeed = 650.f;
+	SprintingSpeed = 950.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -148,4 +150,16 @@ void Agioco_testCharacter::ShiftKeyDown()
 void Agioco_testCharacter::ShiftKeyUp()
 {
 	bShiftKeyDown = false;
+}
+void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
+{
+	MovementStatus = Status;
+	if (MovementStatus == EMovementStatus::EMS_Sprinting)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+	}
 }

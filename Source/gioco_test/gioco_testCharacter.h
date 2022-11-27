@@ -6,10 +6,27 @@
 #include "GameFramework/Character.h"
 #include "gioco_testCharacter.generated.h"
 
-UCLASS(config=Game)
+UENUM(BlueprintType)
+enum class EMovementStatus : uint8
+{
+	EMS_Normal UMETA(DisplayName = "Normal"),
+	EMS_Sprinting UMETA(DisplayName = "Sprinting"),
+
+	EMS_MAX UMETA(DisplayName = "DefaultMax")
+};
+
+UCLASS()
 class Agioco_testCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
+	EMovementStatus MovementStatus;
+
+	//Set movement status and running
+	void SetMovementStatus(EMovementStatus Status);
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -24,6 +41,12 @@ public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+	float RunningSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+	float SprintingSpeed;
 
 	bool bShiftKeyDown;
 
