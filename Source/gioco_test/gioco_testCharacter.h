@@ -56,6 +56,22 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+
+	////// ROLL METHODS  /////
+	UFUNCTION(BlueprintCallable)
+	void Roll_Start();
+
+	UFUNCTION(BlueprintCallable)
+	void Roll_End();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roll")
+	bool bRoll;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anims")
+	class UAnimMontage* RollAnimMontage;
+
+
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
