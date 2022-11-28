@@ -74,6 +74,10 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &Agioco_testCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &Agioco_testCharacter::TouchStopped);
 
+	// Roll key bindings
+	PlayerInputComponent->BindAction("roll", IE_Pressed, this, &Agioco_testCharacter::Roll_Start);
+
+
 }
 
 
@@ -137,17 +141,7 @@ void Agioco_testCharacter::Roll_Start()
 	if (AnimInstance && RollAnimMontage)
 	{
 		AnimInstance->Montage_Play(RollAnimMontage, 1.2f);
-		AnimInstance->Montage_JumpToSection(FName("roll_start"), RollAnimMontage);
+		AnimInstance->Montage_JumpToSection(FName("RollAnim"), RollAnimMontage);
 	}
 }
 
-void Agioco_testCharacter::Roll_End()
-{
-	bRoll = false;
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && RollAnimMontage)
-	{
-		AnimInstance->Montage_Play(RollAnimMontage, 1.2f);
-		AnimInstance->Montage_JumpToSection(FName("roll_end"), RollAnimMontage);
-	}
-}

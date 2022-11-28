@@ -61,8 +61,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Roll_Start();
 
-	UFUNCTION(BlueprintCallable)
-	void Roll_End();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roll")
 	bool bRoll;
