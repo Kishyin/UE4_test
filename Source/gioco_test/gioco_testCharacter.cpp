@@ -9,6 +9,9 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
+
 //////////////////////////////////////////////////////////////////////////
 // Agioco_testCharacter
 
@@ -138,11 +141,11 @@ void Agioco_testCharacter::Roll_Start()
 {
 	bRoll = true;
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && RollAnimMontage)
+	if (AnimInstance && GeneralMontage)
 	{
 
-		AnimInstance->Montage_Play(RollAnimMontage, 1.2f);
-		AnimInstance->Montage_JumpToSection(FName("RollAnim"), RollAnimMontage);
+		AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+		AnimInstance->Montage_JumpToSection(FName("roll"), GeneralMontage);
 	}
 }
 

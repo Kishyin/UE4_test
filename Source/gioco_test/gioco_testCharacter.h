@@ -65,8 +65,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roll")
 	bool bRoll;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anims")
-	class UAnimMontage* RollAnimMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anims")
+	class UAnimMontage* GeneralMontage;
 
 
 
