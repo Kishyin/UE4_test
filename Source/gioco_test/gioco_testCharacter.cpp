@@ -30,6 +30,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bUseControllerRotationRoll = false;
 	bShiftKeyDown = false;
 
+	MovementStatus = EMovementStatus::EMS_Normal;
+
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
@@ -53,7 +55,18 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
+void Agioco_testCharacter::Tick(float DeltaTime) 
+{
+Super::Tick(DeltaTime);
+	if(bShiftKeyDown)
+	{
+		SetMovementStatus(EMovementStatus::EMS_Sprinting);
+	}
+	else
+	{
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
+} 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
