@@ -79,6 +79,7 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	// Roll key bindings
 	PlayerInputComponent->BindAction("roll", IE_Pressed, this, &Agioco_testCharacter::Roll_Start);
+	PlayerInputComponent->BindAction("roll", IE_Released, this, &Agioco_testCharacter::Roll_End);
 
 
 }
@@ -139,6 +140,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
+	
 	bRoll = true;
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && GeneralMontage)

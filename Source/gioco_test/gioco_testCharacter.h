@@ -57,7 +57,7 @@ protected:
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 
-	////// ROLL METHODS  /////
+	////// Kyshin methods and attribute  /////
 	UFUNCTION(BlueprintCallable)
 	void Roll_Start();
 
@@ -67,6 +67,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anims")
 	class UAnimMontage* GeneralMontage;
+
+	UFUNCTION(BlueprintCallable)
+	void Roll_End();
+
+
+
 
 
 
