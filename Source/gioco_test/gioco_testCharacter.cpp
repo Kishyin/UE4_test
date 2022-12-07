@@ -47,7 +47,6 @@ Agioco_testCharacter::Agioco_testCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	bRoll = false;
-	bRoll2 = false;
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -77,10 +76,8 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &Agioco_testCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &Agioco_testCharacter::TouchStopped);
-
 	// Roll key bindings
 	PlayerInputComponent->BindAction("roll", IE_Pressed, this, &Agioco_testCharacter::Roll_Start);
-	PlayerInputComponent->BindAction("roll", IE_Pressed, this, &Agioco_testCharacter::Roll_End);
 	
 
 
@@ -142,9 +139,8 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll2 && !bRoll)
+	if (!bRoll)
 	{
-		bRoll2 = true;
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		if (AnimInstance && GeneralMontage)
@@ -154,18 +150,15 @@ void Agioco_testCharacter::Roll_Start()
 		AnimInstance->Montage_JumpToSection(FName("roll"), GeneralMontage);
 		}
 	}
+	
 }
 
 
-void Agioco_testCharacter::Roll_End()
-{
-	bRoll = false;
 
-}
 
 void Agioco_testCharacter::Stop_Roll()
 {
-	bRoll2 = false;
+	bRoll = false;
 
 }
 

@@ -68,13 +68,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anims")
 	class UAnimMontage* GeneralMontage;
 
-	UFUNCTION(BlueprintCallable)
-	void Roll_End();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roll")
-		bool bRoll2;
 	UFUNCTION(BlueprintCallable)
 		void Stop_Roll();
+
+
 
 
 
