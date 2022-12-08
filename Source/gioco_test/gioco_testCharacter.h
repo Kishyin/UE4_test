@@ -26,6 +26,7 @@ public:
 	EMovementStatus MovementStatus;
 
 	//Set movement status and running
+	UFUNCTION(BlueprintCallable, meta = (BlueprintThreadSafe))
 	void SetMovementStatus(EMovementStatus Status);
 
 	/** Camera boom positioning the camera behind the character */
@@ -40,6 +41,8 @@ public:
 	class UCameraComponent* FollowCamera;
 public:
 	Agioco_testCharacter();
+
+	virtual void Tick(float DeltaTime) override;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)

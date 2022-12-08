@@ -36,6 +36,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
 
+	MovementStatus = EMovementStatus::EMS_Normal;
+
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -53,6 +55,18 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
+void Agioco_testCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (bShiftKeyDown)
+	{
+		SetMovementStatus(EMovementStatus::EMS_Sprinting);
+	}
+	else
+	{
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
+}
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
