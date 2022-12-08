@@ -6,14 +6,35 @@
 #include "GameFramework/Character.h"
 #include "gioco_testCharacter.generated.h"
 
-UCLASS(config=Game)
+UENUM(BlueprintType)
+enum class EMovementStatus : uint8
+{
+	EMS_Normal UMETA(DisplayName = "Normal"),
+	EMS_Sprinting UMETA(DisplayName = "Sprinting"),
+
+	EMS_MAX UMETA(DisplayName = "DefaultMax")
+};
+
+UCLASS()
 class Agioco_testCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
+	EMovementStatus MovementStatus;
+
+	//Set movement status and running
+	UFUNCTION(BlueprintCallable, meta = (BlueprintThreadSafe))
+	void SetMovementStatus(EMovementStatus Status);
+
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	float MovementSpeed;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -21,9 +42,25 @@ class Agioco_testCharacter : public ACharacter
 public:
 	Agioco_testCharacter();
 
+	virtual void Tick(float DeltaTime) override;
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+	float RunningSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+	float SprintingSpeed;
+
+	bool bShiftKeyDown;
+
+	//Press down to enable sprinting
+	void ShiftKeyDown();
+
+	//Released to stop sprinting
+	void ShiftKeyUp();
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)

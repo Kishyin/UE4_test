@@ -9,8 +9,11 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
+<<<<<<< HEAD
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
+=======
+>>>>>>> f96b292c04a9dec89d54067facbfb2b31a4c5cc8
 
 //////////////////////////////////////////////////////////////////////////
 // Agioco_testCharacter
@@ -23,17 +26,22 @@ Agioco_testCharacter::Agioco_testCharacter()
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
+	RunningSpeed = 650.f;
+	SprintingSpeed = 950.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+	bShiftKeyDown = false;
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
+
+	MovementStatus = EMovementStatus::EMS_Normal;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -54,6 +62,18 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
+void Agioco_testCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (bShiftKeyDown)
+	{
+		SetMovementStatus(EMovementStatus::EMS_Sprinting);
+	}
+	else
+	{
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
+}
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -64,6 +84,8 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &Agioco_testCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &Agioco_testCharacter::MoveRight);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &Agioco_testCharacter::ShiftKeyDown);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &Agioco_testCharacter::ShiftKeyUp);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
@@ -135,6 +157,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+<<<<<<< HEAD
 
 
 void Agioco_testCharacter::Roll_Start()
@@ -162,3 +185,25 @@ void Agioco_testCharacter::Stop_Roll()
 
 }
 
+=======
+void Agioco_testCharacter::ShiftKeyDown()
+{
+	bShiftKeyDown = true;
+}
+void Agioco_testCharacter::ShiftKeyUp()
+{
+	bShiftKeyDown = false;
+}
+void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
+{
+	MovementStatus = Status;
+	if (MovementStatus == EMovementStatus::EMS_Sprinting)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+	}
+}
+>>>>>>> f96b292c04a9dec89d54067facbfb2b31a4c5cc8
