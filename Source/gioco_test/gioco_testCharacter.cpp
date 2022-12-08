@@ -9,11 +9,10 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
-<<<<<<< HEAD
+
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
-=======
->>>>>>> f96b292c04a9dec89d54067facbfb2b31a4c5cc8
+
 
 //////////////////////////////////////////////////////////////////////////
 // Agioco_testCharacter
@@ -157,7 +156,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
-<<<<<<< HEAD
+
 
 
 void Agioco_testCharacter::Roll_Start()
@@ -185,7 +184,7 @@ void Agioco_testCharacter::Stop_Roll()
 
 }
 
-=======
+
 void Agioco_testCharacter::ShiftKeyDown()
 {
 	bShiftKeyDown = true;
@@ -206,4 +205,4 @@ void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 	}
 }
->>>>>>> f96b292c04a9dec89d54067facbfb2b31a4c5cc8
+
