@@ -26,7 +26,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 	RunningSpeed = 650.f;
-	SprintingSpeed = 950.f;
+	SprintingSpeed = 1050.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
