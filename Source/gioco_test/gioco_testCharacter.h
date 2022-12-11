@@ -54,6 +54,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	float SprintingSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	bool bShiftKeyDown;
 
 	//Press down to enable sprinting
