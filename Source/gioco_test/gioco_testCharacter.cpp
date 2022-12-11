@@ -55,6 +55,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
+
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -64,7 +66,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 void Agioco_testCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (bShiftKeyDown)
+	if (bShiftKeyDown && !(GetMovementComponent()->IsFalling()))
 	{
 		SetMovementStatus(EMovementStatus::EMS_Sprinting);
 	}
@@ -108,12 +110,15 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void Agioco_testCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
+	
 		Jump();
 }
 
 void Agioco_testCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
+	
 		StopJumping();
+		
 }
 
 void Agioco_testCharacter::TurnAtRate(float Rate)
