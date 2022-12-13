@@ -166,7 +166,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll)
+	if (!bRoll && !(GetMovementComponent()->IsFalling()))
 	{
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
