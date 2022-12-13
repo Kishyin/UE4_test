@@ -55,6 +55,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
+	GetCharacterMovement()->JumpZVelocity = 650.f;
+	GetCharacterMovement()->AirControl = 0.15f;
 
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
