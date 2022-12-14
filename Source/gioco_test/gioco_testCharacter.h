@@ -70,10 +70,10 @@ public:
 /// 
 /// Player stats
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
 	float MaxStamina;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
 	float Stamina;
 
 protected:
@@ -118,15 +118,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 		void Stop_Roll();
-
-
-
-
-
-
-
-
-
 
 protected:
 	// APawn interface
