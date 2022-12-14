@@ -68,7 +68,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 void Agioco_testCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (bShiftKeyDown && !(GetMovementComponent()->IsFalling()))
+	if (bShiftKeyDown && !(GetMovementComponent()->IsFalling()) && (MovementStatus != EMovementStatus::EMS_Furtive))
 	{
 		SetMovementStatus(EMovementStatus::EMS_Sprinting);
 	}

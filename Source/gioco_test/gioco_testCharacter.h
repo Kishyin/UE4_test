@@ -11,6 +11,7 @@ enum class EMovementStatus : uint8
 {
 	EMS_Normal UMETA(DisplayName = "Normal"),
 	EMS_Sprinting UMETA(DisplayName = "Sprinting"),
+	EMS_Furtive UMETA (DisplayName = "Furtive"),
 
 	EMS_MAX UMETA(DisplayName = "DefaultMax")
 };
