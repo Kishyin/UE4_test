@@ -57,17 +57,6 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
-	
-	if (Pawn == nullptr) // controlla quale pawn è in controllo delle animazioni
-	{
-		Pawn = TryGetPawnOwner();
-		if (Pawn)
-		{
-			Character = Cast<Agioco_testCharacter>(Pawn);
-		}
-
-
-
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -85,8 +74,6 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 	{
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
-
-	
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
