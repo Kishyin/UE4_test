@@ -62,11 +62,6 @@ public:
 	//Released to stop sprinting
 	void ShiftKeyUp();
 
-	TryGetPawnOwner();
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	class APawn* Pawn;
-
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;

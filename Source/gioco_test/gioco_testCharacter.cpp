@@ -8,9 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
+
 
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
@@ -58,15 +56,6 @@ Agioco_testCharacter::Agioco_testCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	bRoll = false;
-
-	if (Pawn == nullptr) // controlla quale pawn è in controllo delle animazioni
-	{
-		Pawn = TryGetPawnOwner();
-		if (Pawn)
-		{
-			Cast<Agioco_testCharacter>(Pawn);
-		}
-	}
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
