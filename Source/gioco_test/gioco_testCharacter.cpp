@@ -27,6 +27,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	BaseLookUpRate = 45.f;
 	RunningSpeed = 650.f;
 	SprintingSpeed = 1150.f;
+	MaxStamina = 150.f;
+	Stamina = 120.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -54,6 +56,15 @@ Agioco_testCharacter::Agioco_testCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	bRoll = false;
+
+	//if (Pawn == nullptr) // controlla quale pawn è in controllo delle animazioni
+	//{
+		//Pawn = TryGetPawnOwner();
+		//if (Pawn)
+		//{
+			//Cast<Agioco_testCharacter>(Pawn);
+		//}
+	//}
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)

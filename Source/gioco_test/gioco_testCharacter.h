@@ -66,6 +66,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	//class APawn* Pawn;
+
+/// <summary>
+/// 
+/// Player stats
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "PlayerStats")
+	float MaxStamina;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
+	float Stamina;
+
 protected:
 
 
