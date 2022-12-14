@@ -74,10 +74,11 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 	{
 		SetMovementStatus(EMovementStatus::EMS_Sprinting);
 	}
-	else
+	else if(!bFurtive)
 	{
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
+
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -220,12 +221,8 @@ void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 void Agioco_testCharacter::Furtivity_Mode()
 {
 	bFurtive = !bFurtive;
-	if (bFurtive)
-	{
+	if(bFurtive)
 		SetMovementStatus(EMovementStatus::EMS_Furtive);
-	}
 	else
-	{
 		SetMovementStatus(EMovementStatus::EMS_Normal);
-	}
 }
