@@ -117,6 +117,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Furtive")
 	bool bFurtive;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+	float FurtiveSpeed;
+
 
 
 

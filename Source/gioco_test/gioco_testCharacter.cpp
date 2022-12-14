@@ -55,10 +55,9 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
-	GetCharacterMovement()->JumpZVelocity = 650.f;
-	GetCharacterMovement()->AirControl = 0.15f;
-
 	bFurtive = false;
+	
+	FurtiveSpeed = 300.f;
 
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
@@ -116,7 +115,7 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void Agioco_testCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	
+
 		Jump();
 }
 
@@ -211,9 +210,13 @@ void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
 	}
-	else
+	else if(!bFurtive)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = FurtiveSpeed;
 	}
 }
 
