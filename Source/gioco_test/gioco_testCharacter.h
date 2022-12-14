@@ -111,6 +111,12 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void Stop_Roll();
 
+	UFUNCTION(BlueprintCallable)
+	void Furtivity_Mode();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Furtive")
+	bool bFurtive;
+
 
 
 

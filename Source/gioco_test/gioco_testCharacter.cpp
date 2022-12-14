@@ -58,6 +58,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	GetCharacterMovement()->JumpZVelocity = 650.f;
 	GetCharacterMovement()->AirControl = 0.15f;
 
+	bFurtive = false;
+
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -104,6 +106,7 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	// Roll key bindings
 	PlayerInputComponent->BindAction("roll", IE_Pressed, this, &Agioco_testCharacter::Roll_Start);
 	
+	PlayerInputComponent->BindAction("furtivity", IE_Pressed, this, &Agioco_testCharacter::Furtivity_Mode);
 
 
 }
@@ -213,3 +216,16 @@ void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 	}
 }
 
+
+void Agioco_testCharacter::Furtivity_Mode()
+{
+	bFurtive = !bFurtive;
+	if (bFurtive)
+	{
+		SetMovementStatus(EMovementStatus::EMS_Furtive);
+	}
+	else
+	{
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
+}
