@@ -101,7 +101,7 @@ protected:
 	void Roll_Start();
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roll")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Roll")
 	bool bRoll;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anims")
@@ -119,6 +119,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	float FurtiveSpeed;
+
 
 
 
