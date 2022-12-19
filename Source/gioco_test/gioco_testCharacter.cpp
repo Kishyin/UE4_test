@@ -55,6 +55,12 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
+	//Initialize Enums
+	StaminaStatus = EStaminaStatus::ESS_Normal;
+
+	StaminaDrainRate = 25.f;
+	MinSprintStamina = 50.f;
+
 	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -72,6 +78,100 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 	else
 	{
 		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
+
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+
+	float DeltaStamina = StaminaDrainRate * DeltaTime;
+
+	switch (StaminaStatus)
+	{
+	case EStaminaStatus::ESS_Normal:
+		if (bShiftKeyDown)
+		{
+			if (Stamina - DeltaStamina <= MinSprintStamina)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+				Stamina -= DeltaStamina;
+			}
+			else
+			{
+				Stamina -= DeltaStamina;
+			}
+			SetMovementStatus(EMovementStatus::EMS_Sprinting);
+		}
+		else // Shift key up
+		{
+			if (Stamina + DeltaStamina >= MaxStamina)
+			{
+				Stamina = MaxStamina;
+			}
+			else
+			{
+				Stamina += DeltaStamina;
+			}
+			SetMovementStatus(EMovementStatus::EMS_Normal);
+		}
+		break;
+	case EStaminaStatus::ESS_BelowMinimum:
+		if (bShiftKeyDown)
+		{
+			if (Stamina - DeltaStamina < 0.f)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
+				Stamina = 0;
+				SetMovementStatus(EMovementStatus::EMS_Normal);
+			}
+			else
+			{
+				Stamina -= DeltaStamina;
+				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+			}
+		}
+		else // Shift key up
+		{
+			if (Stamina + DeltaStamina >= MinSprintStamina)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Normal);
+				Stamina += DeltaStamina;
+			}
+			else
+			{
+				Stamina += DeltaStamina;
+			}
+			SetMovementStatus(EMovementStatus::EMS_Normal);
+		}
+
+		break;
+
+	case EStaminaStatus::ESS_Exhausted:
+		if (bShiftKeyDown)
+		{
+			Stamina = 0.f;
+		}
+		else // Shift key up
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
+			Stamina += DeltaStamina;
+		}
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+
+		break;
+	case EStaminaStatus::ESS_ExhaustedRecovering:
+		if (Stamina + DeltaStamina >= MinSprintStamina)
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_Normal);
+			Stamina += DeltaStamina;
+		}
+		else
+		{
+			Stamina += DeltaStamina;
+		}
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+		break;
+	default:
+		;
+
 	}
 }
 
