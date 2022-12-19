@@ -60,6 +60,9 @@ Agioco_testCharacter::Agioco_testCharacter()
 	FurtiveSpeed = 300.f;
 
 
+	
+
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -73,10 +76,16 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 	{
 		SetMovementStatus(EMovementStatus::EMS_Sprinting);
 	}
-	else if(!bFurtive)
+	else if((!bFurtive) || (GetMovementComponent()->IsFalling()))
 	{
+		bFurtive = false;
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
+	else
+	{
+		
+	}
+
 
 }
 
@@ -115,15 +124,13 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void Agioco_testCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-
 		Jump();
 }
 
 void Agioco_testCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	
 		StopJumping();
-		
+
 }
 
 void Agioco_testCharacter::TurnAtRate(float Rate)
@@ -191,6 +198,7 @@ void Agioco_testCharacter::Roll_Start()
 void Agioco_testCharacter::Stop_Roll()
 {
 	bRoll = false;
+
 
 }
 
