@@ -8,10 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-
-
-#include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
+#include "Components/SkeletalMeshComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -26,7 +24,9 @@ Agioco_testCharacter::Agioco_testCharacter()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 	RunningSpeed = 650.f;
-	SprintingSpeed = 950.f;
+	SprintingSpeed = 1150.f;
+	MaxStamina = 150.f;
+	Stamina = 120.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -55,6 +55,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
+<<<<<<< HEAD
 	bFurtive = false;
 	
 	FurtiveSpeed = 300.f;
@@ -71,6 +72,15 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 >>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
 
+=======
+	//Initialize Enums
+	StaminaStatus = EStaminaStatus::ESS_Normal;
+
+	StaminaDrainRate = 25.f;
+	MinSprintStamina = 50.f;
+
+	
+>>>>>>> 5285937d4da03652c9aa7bb4d0a72026c4c602a5
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -89,12 +99,109 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 		bFurtive = false;
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
+<<<<<<< HEAD
 	else
 	{
 		
 	}
 
 
+=======
+
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+
+	float DeltaStamina = StaminaDrainRate * DeltaTime;
+
+	switch (StaminaStatus)
+	{
+	case EStaminaStatus::ESS_Normal:
+		if (bShiftKeyDown)
+		{
+			if (Stamina - DeltaStamina <= MinSprintStamina)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+				Stamina -= DeltaStamina;
+			}
+			else
+			{
+				Stamina -= DeltaStamina;
+			}
+			SetMovementStatus(EMovementStatus::EMS_Sprinting);
+		}
+		else // Shift key up
+		{
+			if (Stamina + DeltaStamina >= MaxStamina)
+			{
+				Stamina = MaxStamina;
+			}
+			else
+			{
+				Stamina += DeltaStamina;
+			}
+			SetMovementStatus(EMovementStatus::EMS_Normal);
+		}
+		break;
+	case EStaminaStatus::ESS_BelowMinimum:
+		if (bShiftKeyDown)
+		{
+			if (Stamina - DeltaStamina < 0.f)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
+				Stamina = 0;
+				SetMovementStatus(EMovementStatus::EMS_Normal);
+			}
+			else
+			{
+				Stamina -= DeltaStamina;
+				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+			}
+		}
+		else // Shift key up
+		{
+			if (Stamina + DeltaStamina >= MinSprintStamina)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Normal);
+				Stamina += DeltaStamina;
+			}
+			else
+			{
+				Stamina += DeltaStamina;
+			}
+			SetMovementStatus(EMovementStatus::EMS_Normal);
+		}
+
+		break;
+
+	case EStaminaStatus::ESS_Exhausted:
+		if (bShiftKeyDown)
+		{
+			Stamina = 0.f;
+		}
+		else // Shift key up
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
+			Stamina += DeltaStamina;
+		}
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+
+		break;
+	case EStaminaStatus::ESS_ExhaustedRecovering:
+		if (Stamina + DeltaStamina >= MinSprintStamina)
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_Normal);
+			Stamina += DeltaStamina;
+		}
+		else
+		{
+			Stamina += DeltaStamina;
+		}
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+		break;
+	default:
+		;
+
+	}
+>>>>>>> 5285937d4da03652c9aa7bb4d0a72026c4c602a5
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
