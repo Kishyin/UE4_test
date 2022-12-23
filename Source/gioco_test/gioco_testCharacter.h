@@ -119,7 +119,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	float FurtiveSpeed;
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> ce80e7657457a34a1c27a67a825aa5062be519b0
+>>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
 
 
 

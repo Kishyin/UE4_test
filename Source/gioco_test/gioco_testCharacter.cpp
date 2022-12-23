@@ -58,8 +58,18 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bFurtive = false;
 	
 	FurtiveSpeed = 300.f;
+<<<<<<< HEAD
 
 
+=======
+<<<<<<< HEAD
+
+
+	
+=======
+>>>>>>> ce80e7657457a34a1c27a67a825aa5062be519b0
+
+>>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -122,7 +132,14 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void Agioco_testCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> ce80e7657457a34a1c27a67a825aa5062be519b0
+>>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
 		Jump();
 }
 
