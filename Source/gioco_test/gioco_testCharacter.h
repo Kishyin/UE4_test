@@ -162,6 +162,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Jump")
 	bool bJump;
 
+	FTimerHandle DelayTimer;
 
 
 

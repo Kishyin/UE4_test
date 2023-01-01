@@ -11,6 +11,8 @@
 #include "Animation/AnimInstance.h"
 #include "Components/SkeletalMeshComponent.h"
 
+#include "TimerManager.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // Agioco_testCharacter
@@ -229,15 +231,25 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void Agioco_testCharacter::Jump_TestCharacter()
 {
-	bJump = true;
-	if(!bFurtive && !bRoll)
-	Super::Jump();
+	if (!bFurtive)
+	{
+		bJump = true;
+		SetMovementStatus(EMovementStatus::EMS_Jumping);
+		Super::Jump();
+		float DelayTime = 0.1;
+		GetWorldTimerManager().SetTimer(DelayTimer, this, &Agioco_testCharacter::StopJump_TestCharacter, DelayTime);
+
+	}
 }
 
 void Agioco_testCharacter::StopJump_TestCharacter()
 {
-	Super::StopJumping();
-	bJump = false;
+	if (!bFurtive)
+	{
+		Super::StopJumping();
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+		bJump = false;
+	}
 }
 
 
@@ -299,7 +311,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll)
+	if (!bRoll && !(GetMovementComponent()->IsFalling()))
 	{
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -320,19 +332,32 @@ void Agioco_testCharacter::Stop_Roll()
 {
 	bRoll = false;
 
-
 }
 
 
 void Agioco_testCharacter::ShiftKeyDown()
 {
-	bShiftKeyDown = true;
+	if (!bFurtive)
+	{
+		bShiftKeyDown = true;
+		SetMovementStatus(EMovementStatus::EMS_Sprinting);
+	}
 }
+
+
 
 void Agioco_testCharacter::ShiftKeyUp()
 {
-	bShiftKeyDown = false;
+	if (!bFurtive)
+	{
+		bShiftKeyDown = false;
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
 }
+
+
+
+
 void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 {
 	MovementStatus = Status;
@@ -355,4 +380,12 @@ void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 void Agioco_testCharacter::Furtivity_Mode()
 {
 	bFurtive = !bFurtive;
+	if (bFurtive)
+	{
+		SetMovementStatus(EMovementStatus::EMS_Furtive);
+	}
+	else
+	{
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+	}
 }
