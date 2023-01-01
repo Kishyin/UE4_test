@@ -11,12 +11,7 @@ enum class EMovementStatus : uint8
 {
 	EMS_Normal UMETA(DisplayName = "Normal"),
 	EMS_Sprinting UMETA(DisplayName = "Sprinting"),
-<<<<<<< HEAD
-	EMS_Furtive UMETA (DisplayName = "Furtive"),
-=======
 	EMS_Dead UMETA(DisplayName = "Dead"),
->>>>>>> 5285937d4da03652c9aa7bb4d0a72026c4c602a5
-
 	EMS_MAX UMETA(DisplayName = "DefaultMax")
 };
 
@@ -155,14 +150,16 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	float FurtiveSpeed;
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
+	UFUNCTION(BlueprintCallable)
+	void Jump_TestCharacter();
 
->>>>>>> ce80e7657457a34a1c27a67a825aa5062be519b0
->>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
+	UFUNCTION(BlueprintCallable)
+	void StopJump_TestCharacter();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Jump")
+	bool bJump;
+
 
 
 

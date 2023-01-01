@@ -55,32 +55,25 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	bRoll = false;
 
-<<<<<<< HEAD
+
 	bFurtive = false;
 	
 	FurtiveSpeed = 300.f;
-<<<<<<< HEAD
 
 
-=======
-<<<<<<< HEAD
 
 
-	
-=======
->>>>>>> ce80e7657457a34a1c27a67a825aa5062be519b0
-
->>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
-
-=======
 	//Initialize Enums
 	StaminaStatus = EStaminaStatus::ESS_Normal;
 
 	StaminaDrainRate = 25.f;
 	MinSprintStamina = 50.f;
 
+	bJump = false;
+
 	
->>>>>>> 5285937d4da03652c9aa7bb4d0a72026c4c602a5
+
+	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -90,6 +83,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 void Agioco_testCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	/*
 	if (bShiftKeyDown && !(GetMovementComponent()->IsFalling()) && (MovementStatus != EMovementStatus::EMS_Furtive))
 	{
 		SetMovementStatus(EMovementStatus::EMS_Sprinting);
@@ -99,14 +93,12 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 		bFurtive = false;
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
-<<<<<<< HEAD
 	else
 	{
 		
-	}
+	}*/
 
-
-=======
+/*
 
 	if (MovementStatus == EMovementStatus::EMS_Dead) return;
 
@@ -200,16 +192,15 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 	default:
 		;
 
-	}
->>>>>>> 5285937d4da03652c9aa7bb4d0a72026c4c602a5
+	}*/
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &Agioco_testCharacter::Jump_TestCharacter);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &Agioco_testCharacter::StopJump_TestCharacter);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &Agioco_testCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &Agioco_testCharacter::MoveRight);
@@ -235,18 +226,24 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 }
 
+void Agioco_testCharacter::Jump_TestCharacter()
+{
+	bJump = true;
+	if(!bFurtive && !bRoll)
+	Super::Jump();
+}
+
+void Agioco_testCharacter::StopJump_TestCharacter()
+{
+	Super::StopJumping();
+	bJump = false;
+}
+
 
 
 void Agioco_testCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> ce80e7657457a34a1c27a67a825aa5062be519b0
->>>>>>> e1cf9c0841a9e5b60133853419923c7970d7982f
 		Jump();
 }
 
@@ -330,6 +327,7 @@ void Agioco_testCharacter::ShiftKeyDown()
 {
 	bShiftKeyDown = true;
 }
+
 void Agioco_testCharacter::ShiftKeyUp()
 {
 	bShiftKeyDown = false;
@@ -337,7 +335,7 @@ void Agioco_testCharacter::ShiftKeyUp()
 void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 {
 	MovementStatus = Status;
-	if (MovementStatus == EMovementStatus::EMS_Sprinting)
+	if (MovementStatus == EMovementStatus::EMS_Sprinting && !bFurtive)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
 	}
@@ -349,14 +347,11 @@ void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = FurtiveSpeed;
 	}
+
 }
 
 
 void Agioco_testCharacter::Furtivity_Mode()
 {
 	bFurtive = !bFurtive;
-	if(bFurtive)
-		SetMovementStatus(EMovementStatus::EMS_Furtive);
-	else
-		SetMovementStatus(EMovementStatus::EMS_Normal);
 }
