@@ -71,7 +71,9 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bRoll = false;
 	bShiftKeyDown = false;
 
+
 	
+
 	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -94,89 +96,61 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 	}
 	else
 	{
-
+		
 	}*/
 
-	/*
+/*
 
-		if (MovementStatus == EMovementStatus::EMS_Dead) return;
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
 
-		float DeltaStamina = StaminaDrainRate * DeltaTime;
+	float DeltaStamina = StaminaDrainRate * DeltaTime;
 
-		switch (StaminaStatus)
+	switch (StaminaStatus)
+	{
+	case EStaminaStatus::ESS_Normal:
+		if (bShiftKeyDown)
 		{
-		case EStaminaStatus::ESS_Normal:
-			if (bShiftKeyDown)
+			if (Stamina - DeltaStamina <= MinSprintStamina)
 			{
-				if (Stamina - DeltaStamina <= MinSprintStamina)
-				{
-					SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
-					Stamina -= DeltaStamina;
-				}
-				else
-				{
-					Stamina -= DeltaStamina;
-				}
-				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+				SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+				Stamina -= DeltaStamina;
 			}
-			else // Shift key up
+			else
 			{
-				if (Stamina + DeltaStamina >= MaxStamina)
-				{
-					Stamina = MaxStamina;
-				}
-				else
-				{
-					Stamina += DeltaStamina;
-				}
-				SetMovementStatus(EMovementStatus::EMS_Normal);
+				Stamina -= DeltaStamina;
 			}
-			break;
-		case EStaminaStatus::ESS_BelowMinimum:
-			if (bShiftKeyDown)
+			SetMovementStatus(EMovementStatus::EMS_Sprinting);
+		}
+		else // Shift key up
+		{
+			if (Stamina + DeltaStamina >= MaxStamina)
 			{
-				if (Stamina - DeltaStamina < 0.f)
-				{
-					SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
-					Stamina = 0;
-					SetMovementStatus(EMovementStatus::EMS_Normal);
-				}
-				else
-				{
-					Stamina -= DeltaStamina;
-					SetMovementStatus(EMovementStatus::EMS_Sprinting);
-				}
+				Stamina = MaxStamina;
 			}
-			else // Shift key up
+			else
 			{
-				if (Stamina + DeltaStamina >= MinSprintStamina)
-				{
-					SetStaminaStatus(EStaminaStatus::ESS_Normal);
-					Stamina += DeltaStamina;
-				}
-				else
-				{
-					Stamina += DeltaStamina;
-				}
-				SetMovementStatus(EMovementStatus::EMS_Normal);
-			}
-
-			break;
-
-		case EStaminaStatus::ESS_Exhausted:
-			if (bShiftKeyDown)
-			{
-				Stamina = 0.f;
-			}
-			else // Shift key up
-			{
-				SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
 				Stamina += DeltaStamina;
 			}
 			SetMovementStatus(EMovementStatus::EMS_Normal);
-
-			break;
-		case EStaminaStatus::ESS_ExhaustedRecovering:
+		}
+		break;
+	case EStaminaStatus::ESS_BelowMinimum:
+		if (bShiftKeyDown)
+		{
+			if (Stamina - DeltaStamina < 0.f)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
+				Stamina = 0;
+				SetMovementStatus(EMovementStatus::EMS_Normal);
+			}
+			else
+			{
+				Stamina -= DeltaStamina;
+				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+			}
+		}
+		else // Shift key up
+		{
 			if (Stamina + DeltaStamina >= MinSprintStamina)
 			{
 				SetStaminaStatus(EStaminaStatus::ESS_Normal);
@@ -187,11 +161,39 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 				Stamina += DeltaStamina;
 			}
 			SetMovementStatus(EMovementStatus::EMS_Normal);
-			break;
-		default:
-			;
+		}
 
-		}*/
+		break;
+
+	case EStaminaStatus::ESS_Exhausted:
+		if (bShiftKeyDown)
+		{
+			Stamina = 0.f;
+		}
+		else // Shift key up
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
+			Stamina += DeltaStamina;
+		}
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+
+		break;
+	case EStaminaStatus::ESS_ExhaustedRecovering:
+		if (Stamina + DeltaStamina >= MinSprintStamina)
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_Normal);
+			Stamina += DeltaStamina;
+		}
+		else
+		{
+			Stamina += DeltaStamina;
+		}
+		SetMovementStatus(EMovementStatus::EMS_Normal);
+		break;
+	default:
+		;
+
+	}*/
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -346,7 +348,6 @@ void Agioco_testCharacter::ShiftKeyDown()
 	{
 		bShiftKeyDown = true;
 		SetMovementStatus(EMovementStatus::EMS_Sprinting);
-		
 	}
 }
 
