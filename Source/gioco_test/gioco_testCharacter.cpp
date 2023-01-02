@@ -28,7 +28,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	RunningSpeed = 650.f;
 	SprintingSpeed = 1150.f;
 	MaxStamina = 150.f;
-	Stamina = 120.f;
+	Stamina = 150.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -238,6 +238,7 @@ void Agioco_testCharacter::Jump_TestCharacter()
 		Super::Jump();
 		float DelayTime = 0.1;
 		GetWorldTimerManager().SetTimer(DelayTimer, this, &Agioco_testCharacter::StopJump_TestCharacter, DelayTime);
+		Stamina -= 20.f;
 
 	}
 }
@@ -320,8 +321,14 @@ void Agioco_testCharacter::Roll_Start()
 
 		AnimInstance->Montage_Play(GeneralMontage, 1.2f);
 		AnimInstance->Montage_JumpToSection(FName("roll"), GeneralMontage);
+
+		Stamina -= 30.f;
+
+
 		}
 	}
+
+	
 	
 }
 
