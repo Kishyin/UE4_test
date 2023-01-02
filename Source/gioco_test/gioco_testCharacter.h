@@ -11,8 +11,9 @@ enum class EMovementStatus : uint8
 {
 	EMS_Normal UMETA(DisplayName = "Normal"),
 	EMS_Sprinting UMETA(DisplayName = "Sprinting"),
+	EMS_Jumping UMETA(DisplayName = "Jumping"),
+	EMS_Furtive UMETA(DisplayName = "Furtive"),
 	EMS_Dead UMETA(DisplayName = "Dead"),
-
 	EMS_MAX UMETA(DisplayName = "DefaultMax")
 };
 
@@ -78,6 +79,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	float SprintingSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	bool bShiftKeyDown;
 
 	//Press down to enable sprinting
@@ -132,7 +134,7 @@ protected:
 	void Roll_Start();
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roll")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Roll")
 	bool bRoll;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anims")
@@ -141,6 +143,33 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 		void Stop_Roll();
+
+	UFUNCTION(BlueprintCallable)
+	void Furtivity_Mode();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Furtive")
+	bool bFurtive;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+	float FurtiveSpeed;
+
+	UFUNCTION(BlueprintCallable)
+	void Jump_TestCharacter();
+
+	UFUNCTION(BlueprintCallable)
+	void StopJump_TestCharacter();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Jump")
+	bool bJump;
+
+	FTimerHandle DelayTimer;
+
+
+
+
+
+
+	
 
 
 
