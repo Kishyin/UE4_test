@@ -27,8 +27,6 @@ Agioco_testCharacter::Agioco_testCharacter()
 	BaseLookUpRate = 45.f;
 	RunningSpeed = 650.f;
 	SprintingSpeed = 1150.f;
-	MaxStamina = 150.f;
-	Stamina = 120.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -39,7 +37,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->AirControl = 0.2f;
+	GetCharacterMovement()->AirControl = 0.01f;
 
 	MovementStatus = EMovementStatus::EMS_Normal;
 
@@ -65,6 +63,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 
 	StaminaDrainRate = 25.f;
 	MinSprintStamina = 50.f;
+	MaxStamina = 150.f;
+	Stamina = 120.f;
 
 	bJump = false;
 	bFurtive = false;
@@ -84,26 +84,13 @@ Agioco_testCharacter::Agioco_testCharacter()
 void Agioco_testCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	/*
-	if (bShiftKeyDown && !(GetMovementComponent()->IsFalling()) && (MovementStatus != EMovementStatus::EMS_Furtive))
-	{
-		SetMovementStatus(EMovementStatus::EMS_Sprinting);
-	}
-	else if((!bFurtive) || (GetMovementComponent()->IsFalling()))
-	{
-		bFurtive = false;
-		SetMovementStatus(EMovementStatus::EMS_Normal);
-	}
-	else
-	{
-		
-	}*/
 
-/*
+	
 
 	if (MovementStatus == EMovementStatus::EMS_Dead) return;
 
 	float DeltaStamina = StaminaDrainRate * DeltaTime;
+
 
 	switch (StaminaStatus)
 	{
@@ -119,7 +106,18 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			{
 				Stamina -= DeltaStamina;
 			}
-			SetMovementStatus(EMovementStatus::EMS_Sprinting);
+		}
+		else if (bRoll)
+		{
+			if (Stamina <= MinSprintStamina)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+				Stamina -= 1.1f;
+			}
+			else
+			{
+				Stamina -= 1.1f;
+			}
 		}
 		else // Shift key up
 		{
@@ -131,7 +129,6 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			{
 				Stamina += DeltaStamina;
 			}
-			SetMovementStatus(EMovementStatus::EMS_Normal);
 		}
 		break;
 	case EStaminaStatus::ESS_BelowMinimum:
@@ -141,12 +138,22 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			{
 				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
 				Stamina = 0;
-				SetMovementStatus(EMovementStatus::EMS_Normal);
 			}
 			else
 			{
 				Stamina -= DeltaStamina;
-				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+			}
+		}
+		else if (bRoll)
+		{
+			if (Stamina < 0.f)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
+				Stamina = 0;
+			}
+			else
+			{
+				Stamina -= 1.1f;
 			}
 		}
 		else // Shift key up
@@ -160,7 +167,6 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			{
 				Stamina += DeltaStamina;
 			}
-			SetMovementStatus(EMovementStatus::EMS_Normal);
 		}
 
 		break;
@@ -170,12 +176,15 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 		{
 			Stamina = 0.f;
 		}
+		else if (bRoll)
+		{
+			Stamina = 0.f;
+		}
 		else // Shift key up
 		{
 			SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
 			Stamina += DeltaStamina;
 		}
-		SetMovementStatus(EMovementStatus::EMS_Normal);
 
 		break;
 	case EStaminaStatus::ESS_ExhaustedRecovering:
@@ -184,16 +193,20 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			SetStaminaStatus(EStaminaStatus::ESS_Normal);
 			Stamina += DeltaStamina;
 		}
+		else if(bRoll)
+		{
+			SetStaminaStatus(EStaminaStatus::ESS_Normal);
+			Stamina += DeltaStamina;
+		}
 		else
 		{
 			Stamina += DeltaStamina;
 		}
-		SetMovementStatus(EMovementStatus::EMS_Normal);
 		break;
 	default:
 		;
 
-	}*/
+	}
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -238,7 +251,6 @@ void Agioco_testCharacter::Jump_TestCharacter()
 		Super::Jump();
 		float DelayTime = 0.1;
 		GetWorldTimerManager().SetTimer(DelayTimer, this, &Agioco_testCharacter::StopJump_TestCharacter, DelayTime);
-
 	}
 }
 
@@ -249,6 +261,7 @@ void Agioco_testCharacter::StopJump_TestCharacter()
 		Super::StopJumping();
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 		bJump = false;
+		
 	}
 }
 
@@ -317,7 +330,6 @@ void Agioco_testCharacter::Roll_Start()
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		if (AnimInstance && GeneralMontage)
 		{
-
 		AnimInstance->Montage_Play(GeneralMontage, 1.2f);
 		AnimInstance->Montage_JumpToSection(FName("roll"), GeneralMontage);
 		}
