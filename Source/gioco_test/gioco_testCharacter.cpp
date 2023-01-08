@@ -25,7 +25,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
-	RunningSpeed = 650.f;
+	RunningSpeed = 500.f;
 	SprintingSpeed = 1150.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
@@ -254,7 +254,7 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void Agioco_testCharacter::Jump_TestCharacter()
 {
-	if (!bFurtive)
+	if (!bFurtive && !bRoll)
 	{
 		bJump = true;
 		SetMovementStatus(EMovementStatus::EMS_Jumping);
