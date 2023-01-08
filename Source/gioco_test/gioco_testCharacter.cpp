@@ -107,16 +107,16 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 					Stamina -= DeltaStamina;
 				}
 			}
-			else if (bRoll && !bFurtive)
+			else if (bRoll)
 			{
 				if (Stamina <= MinSprintStamina)
 				{
 					SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
-					Stamina -= 1.1f;
+					Stamina -= 0.8f;
 				}
 				else
 				{
-					Stamina -= 1.1f;
+					Stamina -= 0.8f;
 				}
 			}
 			else // Shift key up
@@ -145,7 +145,7 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 					Stamina -= DeltaStamina;
 				}
 			}
-			else if (bRoll && !bFurtive)
+			else if (bRoll)
 			{
 				if (Stamina < 0.f)
 				{
@@ -154,7 +154,7 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 				}
 				else
 				{
-					Stamina -= 1.1f;
+					Stamina -= 0.8f;
 				}
 			}
 			else // Shift key up
@@ -178,7 +178,7 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 				SetMovementStatus(EMovementStatus::EMS_Normal);
 				Stamina = 0.f;
 			}
-			else if (bRoll && !bFurtive)
+			else if (bRoll)
 			{
 				Stamina = 0.f;
 			}
