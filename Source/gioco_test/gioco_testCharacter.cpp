@@ -91,74 +91,119 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 
 	float DeltaStamina = StaminaDrainRate * DeltaTime;
 
+		switch (StaminaStatus)
+		{
+		case EStaminaStatus::ESS_Normal:
+			if (bShiftKeyDown && ((GetVelocity().Size()) > 0.1f) && !(GetMovementComponent()->IsFalling()) && !bFurtive)
+			{
+				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+				if (Stamina - DeltaStamina <= MinSprintStamina)
+				{
+					SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+					Stamina -= DeltaStamina;
+				}
+				else
+				{
+					Stamina -= DeltaStamina;
+				}
+			}
+			else if (bRoll && !bFurtive)
+			{
+				if (Stamina <= MinSprintStamina)
+				{
+					SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+					Stamina -= 1.1f;
+				}
+				else
+				{
+					Stamina -= 1.1f;
+				}
+			}
+			else // Shift key up
+			{
+				if (Stamina + DeltaStamina >= MaxStamina)
+				{
+					Stamina = MaxStamina;
+				}
+				else
+				{
+					Stamina += DeltaStamina;
+				}
+			}
+			break;
+		case EStaminaStatus::ESS_BelowMinimum:
+			if (bShiftKeyDown && ((GetVelocity().Size()) > 0.1f) && !(GetMovementComponent()->IsFalling()) && !bFurtive)
+			{
+				SetMovementStatus(EMovementStatus::EMS_Sprinting);
+				if (Stamina - DeltaStamina < 0.f)
+				{
+					SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
+					Stamina = 0;
+				}
+				else
+				{
+					Stamina -= DeltaStamina;
+				}
+			}
+			else if (bRoll && !bFurtive)
+			{
+				if (Stamina < 0.f)
+				{
+					SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
+					Stamina = 0;
+				}
+				else
+				{
+					Stamina -= 1.1f;
+				}
+			}
+			else // Shift key up
+			{
+				if (Stamina + DeltaStamina >= MinSprintStamina)
+				{
+					SetStaminaStatus(EStaminaStatus::ESS_Normal);
+					Stamina += DeltaStamina;
+				}
+				else
+				{
+					Stamina += DeltaStamina;
+				}
+			}
 
-	switch (StaminaStatus)
-	{
-	case EStaminaStatus::ESS_Normal:
-		if (bShiftKeyDown)
-		{
-			if (Stamina - DeltaStamina <= MinSprintStamina)
+			break;
+
+		case EStaminaStatus::ESS_Exhausted:
+			if (bShiftKeyDown && ((GetVelocity().Size()) > 0.1f) && !(GetMovementComponent()->IsFalling()) && !bFurtive)
 			{
-				SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
-				Stamina -= DeltaStamina;
+				SetMovementStatus(EMovementStatus::EMS_Normal);
+				Stamina = 0.f;
 			}
-			else
+			else if (bRoll && !bFurtive)
 			{
-				Stamina -= DeltaStamina;
+				Stamina = 0.f;
 			}
-		}
-		else if (bRoll)
-		{
-			if (Stamina <= MinSprintStamina)
+			else // Shift key up
 			{
-				SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
-				Stamina -= 1.1f;
-			}
-			else
-			{
-				Stamina -= 1.1f;
-			}
-		}
-		else // Shift key up
-		{
-			if (Stamina + DeltaStamina >= MaxStamina)
-			{
-				Stamina = MaxStamina;
-			}
-			else
-			{
+				SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
 				Stamina += DeltaStamina;
 			}
-		}
-		break;
-	case EStaminaStatus::ESS_BelowMinimum:
-		if (bShiftKeyDown)
-		{
-			if (Stamina - DeltaStamina < 0.f)
+
+			break;
+		case EStaminaStatus::ESS_ExhaustedRecovering:
+			if (bFurtive)
 			{
-				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
-				Stamina = 0;
+				SetMovementStatus(EMovementStatus::EMS_Furtive);
 			}
 			else
 			{
-				Stamina -= DeltaStamina;
+				SetMovementStatus(EMovementStatus::EMS_Normal);
 			}
-		}
-		else if (bRoll)
-		{
-			if (Stamina < 0.f)
-			{
-				SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
-				Stamina = 0;
-			}
-			else
-			{
-				Stamina -= 1.1f;
-			}
-		}
-		else // Shift key up
-		{
 			if (Stamina + DeltaStamina >= MinSprintStamina)
+			{
+				SetStaminaStatus(EStaminaStatus::ESS_Normal);
+				Stamina += DeltaStamina;
+			}
+			else if (bRoll)
 			{
 				SetStaminaStatus(EStaminaStatus::ESS_Normal);
 				Stamina += DeltaStamina;
@@ -167,46 +212,11 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			{
 				Stamina += DeltaStamina;
 			}
-		}
+			break;
+		default:
+			;
 
-		break;
-
-	case EStaminaStatus::ESS_Exhausted:
-		if (bShiftKeyDown)
-		{
-			Stamina = 0.f;
 		}
-		else if (bRoll)
-		{
-			Stamina = 0.f;
-		}
-		else // Shift key up
-		{
-			SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
-			Stamina += DeltaStamina;
-		}
-
-		break;
-	case EStaminaStatus::ESS_ExhaustedRecovering:
-		if (Stamina + DeltaStamina >= MinSprintStamina)
-		{
-			SetStaminaStatus(EStaminaStatus::ESS_Normal);
-			Stamina += DeltaStamina;
-		}
-		else if(bRoll)
-		{
-			SetStaminaStatus(EStaminaStatus::ESS_Normal);
-			Stamina += DeltaStamina;
-		}
-		else
-		{
-			Stamina += DeltaStamina;
-		}
-		break;
-	default:
-		;
-
-	}
 }
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -324,7 +334,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll && !(GetMovementComponent()->IsFalling()))
+	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering))
 	{
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -349,10 +359,10 @@ void Agioco_testCharacter::Stop_Roll()
 
 void Agioco_testCharacter::ShiftKeyDown()
 {
-	if (!bFurtive)
+	if (!bFurtive && !GetMovementComponent()->IsFalling())
 	{
 		bShiftKeyDown = true;
-		SetMovementStatus(EMovementStatus::EMS_Sprinting);
+		
 	}
 }
 
@@ -373,11 +383,11 @@ void Agioco_testCharacter::ShiftKeyUp()
 void Agioco_testCharacter::SetMovementStatus(EMovementStatus Status)
 {
 	MovementStatus = Status;
-	if (MovementStatus == EMovementStatus::EMS_Sprinting && !bFurtive)
+	if (MovementStatus == EMovementStatus::EMS_Sprinting)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
 	}
-	else if(!bFurtive)
+	else if(MovementStatus == EMovementStatus::EMS_Normal)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 	}
@@ -395,6 +405,7 @@ void Agioco_testCharacter::Furtivity_Mode()
 	if (bFurtive)
 	{
 		SetMovementStatus(EMovementStatus::EMS_Furtive);
+		bShiftKeyDown = false;
 	}
 	else
 	{
