@@ -15,12 +15,15 @@ public:
 	// Sets default values for this actor's properties
 	AWeapon();
 
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "SkeletalMesh")
+	class USkeletalMeshComponent* SkeletalMesh;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
+
 
 };
