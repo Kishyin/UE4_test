@@ -6,6 +6,20 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+
+UENUM(BlueprintType)
+
+enum class EWeaponState : uint8
+{
+	EWS_Pickup		UMETA(DisplayName = "Pickup"),
+	EWS_Equipped	UMETA(DisplayName = "Equipped"),
+	EWS_MAX			UMETA(DisplayName = "DefaultMax"),
+};
+
+
+
+
+
 UCLASS()
 class GIOCO_TEST_API AWeapon : public AActor
 {
@@ -20,6 +34,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item | Combat")
 	class UBoxComponent* CombatCollision;
+
+
 
 
 protected:
