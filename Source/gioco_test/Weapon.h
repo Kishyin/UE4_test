@@ -18,6 +18,9 @@ public:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "SkeletalMesh")
 	class USkeletalMeshComponent* SkeletalMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item | Combat")
+	class UBoxComponent* CombatCollision;
+
 
 protected:
 	// Called when the game starts or when spawned
