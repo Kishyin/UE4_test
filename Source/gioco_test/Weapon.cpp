@@ -4,6 +4,7 @@
 #include "Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "gioco_testCharacter.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -25,6 +26,8 @@ AWeapon::AWeapon()
 	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
+	WeaponState = EWeaponState::EWS_Pickup;
+
 
 
 
@@ -34,7 +37,39 @@ AWeapon::AWeapon()
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CombatCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+}
+
+void AWeapon::onOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Super::onOverlapBegin(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+
+	if ((WeaponState == EWeaponState::EWS_Pickup) && OtherActor)
+	{
+		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
+		if (Main)
+		{
+			Main->SetActiveOverlappingItem(this);
+		}
+	}
+}
+
+void AWeapon::onOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	Super::onOverlapEnd(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+	if (OtherActor)
+	{
+		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
+		if (Main)
+		{
+			Main->SetActiveOverlappingItem(nullptr);
+		}
+	}
 }
 
 
