@@ -3,8 +3,13 @@
 
 #include "Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Components/BoxComponent.h"
 #include "gioco_testCharacter.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/BoxComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -28,7 +33,7 @@ AWeapon::AWeapon()
 
 	WeaponState = EWeaponState::EWS_Pickup;
 
-
+	
 
 
 }

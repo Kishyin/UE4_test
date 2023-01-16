@@ -164,6 +164,9 @@ protected:
 
 	FTimerHandle DelayTimer;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items)
+	class AItem* ActiveOverlappingItem;
+
 
 
 

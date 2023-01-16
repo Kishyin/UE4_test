@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Item.h"
 #include "Weapon.generated.h"
 
 
@@ -18,10 +19,8 @@ enum class EWeaponState : uint8
 
 
 
-
-
 UCLASS()
-class GIOCO_TEST_API AWeapon : public AActor
+class GIOCO_TEST_API AWeapon : public AItem
 {
 	GENERATED_BODY()
 	

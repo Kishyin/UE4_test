@@ -12,6 +12,7 @@
 #include "Components/SkeletalMeshComponent.h"
 
 #include "TimerManager.h"
+#include "Item.h"
 
 
 //////////////////////////////////////////////////////////////////////////
