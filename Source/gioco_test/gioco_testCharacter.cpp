@@ -250,6 +250,8 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	
 	PlayerInputComponent->BindAction("furtivity", IE_Pressed, this, &Agioco_testCharacter::Furtivity_Mode);
 
+	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &Agioco_testCharacter::LMBDown);
+	PlayerInputComponent->BindAction("LMB", IE_Released, this, &Agioco_testCharacter::LMBUp);
 
 }
 
@@ -412,4 +414,34 @@ void Agioco_testCharacter::Furtivity_Mode()
 	{
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
+}
+
+
+void AMyCharacter::LMBUp()
+{
+	bLMBDown = false;
+}
+
+void AMyCharacter::LMBDown()
+{
+	bLMBDown = true;
+
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+
+	if (MainPlayerController) if (MainPlayerController->bPauseMenuVisible) return;
+
+	if (ActiveOverlappingItem)
+	{
+		AWeapon* Weapon = Cast<AWeapon>(ActiveOverlappingItem);
+		if (Weapon)
+		{
+			Weapon->Equip(this);
+			SetActiveOverlappingItem(nullptr);
+		}
+	}
+	else if (EquippedWeapon)
+	{
+		Attack();
+	}
+
 }

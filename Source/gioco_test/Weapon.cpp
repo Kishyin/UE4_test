@@ -33,8 +33,9 @@ AWeapon::AWeapon()
 
 	WeaponState = EWeaponState::EWS_Pickup;
 
-	
+	Damage = 25.f;
 
+	
 
 }
 
@@ -47,6 +48,9 @@ void AWeapon::BeginPlay()
 	CombatCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+	CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::CombatonOverlapBegin);
+	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::CombatonOverlapEnd);
 
 }
 
