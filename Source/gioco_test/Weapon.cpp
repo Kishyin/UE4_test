@@ -49,8 +49,8 @@ void AWeapon::BeginPlay()
 	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
-	CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::CombatonOverlapBegin);
-	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::CombatonOverlapEnd);
+	/*CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::CombatonOverlapBegin);
+	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::CombatonOverlapEnd);*/
 
 }
 

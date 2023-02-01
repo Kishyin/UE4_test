@@ -12,7 +12,7 @@
 #include "Components/SkeletalMeshComponent.h"
 
 #include "TimerManager.h"
-#include "Item.h"
+#include "Weapon.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -250,8 +250,8 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	
 	PlayerInputComponent->BindAction("furtivity", IE_Pressed, this, &Agioco_testCharacter::Furtivity_Mode);
 
-	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &Agioco_testCharacter::LMBDown);
-	PlayerInputComponent->BindAction("LMB", IE_Released, this, &Agioco_testCharacter::LMBUp);
+	/*PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &Agioco_testCharacter::LMBDown);
+	PlayerInputComponent->BindAction("LMB", IE_Released, this, &Agioco_testCharacter::LMBUp);*/
 
 }
 
@@ -416,32 +416,35 @@ void Agioco_testCharacter::Furtivity_Mode()
 	}
 }
 
-
-void AMyCharacter::LMBUp()
+/*
+void Agioco_testCharacter::LMBUp()
 {
 	bLMBDown = false;
 }
 
-void AMyCharacter::LMBDown()
+void Agioco_testCharacter::LMBDown()
 {
 	bLMBDown = true;
 
 	if (MovementStatus == EMovementStatus::EMS_Dead) return;
-
-	if (MainPlayerController) if (MainPlayerController->bPauseMenuVisible) return;
 
 	if (ActiveOverlappingItem)
 	{
 		AWeapon* Weapon = Cast<AWeapon>(ActiveOverlappingItem);
 		if (Weapon)
 		{
-			Weapon->Equip(this);
+			//Weapon->Equip(this);
 			SetActiveOverlappingItem(nullptr);
 		}
 	}
 	else if (EquippedWeapon)
 	{
-		Attack();
+		//Attack();
 	}
 
 }
+
+void Agioco_testCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
+{
+
+}*/

@@ -167,11 +167,22 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items)
 	class AItem* ActiveOverlappingItem;
 
+	bool bLMBDown;
+
+	/*
+	void LMBDown();
+	void LMBUp();
+	*/
 
 
 
 
 
+	/*void SetEquippedWeapon(AWeapon* WeaponToSet);
+	FORCEINLINE AWeapon* GetEquippedWeapon() { return EquippedWeapon; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items")
+	class AWeapon* EquippedWeapon;*/
 	
 
 
@@ -195,5 +206,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	FORCEINLINE void SetActiveOverlappingItem(AItem* Item) { ActiveOverlappingItem = Item; }
+
+
+
 };
 
