@@ -169,25 +169,12 @@ protected:
 
 	bool bLMBDown;
 
-	/*
+	
 	void LMBDown();
 	void LMBUp();
-	*/
 
 
-
-
-
-
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items")
-	class AWeapon* EquippedWeapon;
 	
-
-
-
-
-
 
 
 
@@ -206,6 +193,11 @@ public:
 
 
 	FORCEINLINE void SetActiveOverlappingItem(AItem* Item) { ActiveOverlappingItem = Item; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items")
+	class AWeapon* EquippedWeapon;
+
+	void SetEquippedWeapon(AWeapon* WeaponToSet);
 
 
 

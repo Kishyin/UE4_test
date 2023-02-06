@@ -92,7 +92,7 @@ void AWeapon::CombatonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActo
 
 }
 
-/*void AWeapon::Equip(Agioco_testCharacter* Char)
+void AWeapon::Equip(Agioco_testCharacter* Char)
 {
 	if (Char)
 	{
@@ -121,7 +121,7 @@ void AWeapon::CombatonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActo
 		}
 
 	}
-}*/
+}
 
 void AWeapon::ActivateCollision()
 {
