@@ -416,35 +416,3 @@ void Agioco_testCharacter::Furtivity_Mode()
 	}
 }
 
-/*
-void Agioco_testCharacter::LMBUp()
-{
-	bLMBDown = false;
-}
-
-void Agioco_testCharacter::LMBDown()
-{
-	bLMBDown = true;
-
-	if (MovementStatus == EMovementStatus::EMS_Dead) return;
-
-	if (ActiveOverlappingItem)
-	{
-		AWeapon* Weapon = Cast<AWeapon>(ActiveOverlappingItem);
-		if (Weapon)
-		{
-			//Weapon->Equip(this);
-			SetActiveOverlappingItem(nullptr);
-		}
-	}
-	else if (EquippedWeapon)
-	{
-		//Attack();
-	}
-
-}
-
-void Agioco_testCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
-{
-
-}*/

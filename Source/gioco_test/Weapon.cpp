@@ -49,8 +49,8 @@ void AWeapon::BeginPlay()
 	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
-	/*CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::CombatonOverlapBegin);
-	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::CombatonOverlapEnd);*/
+	CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::CombatonOverlapBegin);
+	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::CombatonOverlapEnd);
 
 }
 
@@ -79,6 +79,61 @@ void AWeapon::onOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			Main->SetActiveOverlappingItem(nullptr);
 		}
 	}
+}
+
+void AWeapon::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+}
+
+
+void AWeapon::CombatonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+
+}
+
+/*void AWeapon::Equip(Agioco_testCharacter* Char)
+{
+	if (Char)
+	{
+		SetInstigator(Char->GetController());
+
+		//We want to ignore weapon collision witth camera or with our character
+		SkeletalMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+		SkeletalMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+
+		//we don't want to simulate physic beacause we want to attach it to the player
+		SkeletalMesh->SetSimulatePhysics(false);
+
+		const USkeletalMeshSocket* RightHandSocket = Char->GetMesh()->GetSocketByName("Weapon_Socket");
+		if (RightHandSocket)
+		{
+			RightHandSocket->AttachActor(this, Char->GetMesh());
+
+			Char->SetEquippedWeapon(this);
+			Char->SetActiveOverlappingItem(nullptr);
+			SetWeaponState(EWeaponState::EWS_Equipped);
+		}
+		if (OnEquipSound) UGameplayStatics::PlaySound2D(this, OnEquipSound);
+		if (!bWeaponParticle)            //This flag deactivates the weapon particles after the equip of the weapon//
+		{
+			IdleParticleComponent->Deactivate();
+		}
+
+	}
+}*/
+
+void AWeapon::ActivateCollision()
+{
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+
+}
+
+
+void AWeapon::DeactivateCollision()
+{
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 
