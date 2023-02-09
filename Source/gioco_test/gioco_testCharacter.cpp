@@ -438,10 +438,10 @@ void Agioco_testCharacter::LMBDown()
 			SetActiveOverlappingItem(nullptr);
 		}
 	}
-	/*else if (EquippedWeapon)
+	else if (EquippedWeapon)
 	{
 		Attack();
-	}*/
+	}
 
 }
 
@@ -452,4 +452,32 @@ void Agioco_testCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
 		EquippedWeapon->Destroy();
 	}
 	EquippedWeapon = WeaponToSet;
+}
+
+void Agioco_testCharacter::Attack()
+{
+	if (!bAttacking && MovementStatus != EMovementStatus::EMS_Dead)
+	{
+		bAttacking = true;
+		//SetInterpToEnemy(true);
+
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && GeneralMontage)
+		{
+			AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+			AnimInstance->Montage_JumpToSection(FName("attack_1"), GeneralMontage);
+		}
+
+	}
+}
+
+void Agioco_testCharacter::AttackEnd()
+{
+	bAttacking = false;
+	//SetInterpToEnemy(false);
+	if (bLMBDown)
+	{
+		Attack();
+	}
 }

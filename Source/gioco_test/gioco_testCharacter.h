@@ -173,6 +173,14 @@ protected:
 	void LMBDown();
 	void LMBUp();
 
+	void Attack();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anims")
+	bool bAttacking;
+
 
 	
 
