@@ -338,8 +338,9 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering) && !bAttacking)
+	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering))
 	{
+		bAttacking = false;
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		if (AnimInstance && GeneralMontage)
