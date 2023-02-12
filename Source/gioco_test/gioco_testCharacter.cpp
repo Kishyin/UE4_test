@@ -71,6 +71,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bFurtive = false;
 	bRoll = false;
 	bShiftKeyDown = false;
+	bAttacking = false;
 
 
 	
@@ -337,7 +338,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering) && !bLMBDown)
+	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering) && !bAttacking)
 	{
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -419,11 +420,13 @@ void Agioco_testCharacter::Furtivity_Mode()
 
 void Agioco_testCharacter::LMBUp()
 {
+	if (bRoll) return;
 	bLMBDown = false;
 }
 
 void Agioco_testCharacter::LMBDown()
 {
+	if (bRoll) return;
 	bLMBDown = true;
 
 	if (MovementStatus == EMovementStatus::EMS_Dead) return;
@@ -476,7 +479,7 @@ void Agioco_testCharacter::AttackEnd()
 {
 	bAttacking = false;
 	//SetInterpToEnemy(false);
-	if (bLMBDown && !bRoll)
+	if (bLMBDown)
 	{
 		Attack();
 	}
