@@ -337,7 +337,7 @@ void Agioco_testCharacter::MoveRight(float Value)
 
 void Agioco_testCharacter::Roll_Start()
 {
-	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering))
+	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering) && !bLMBDown)
 	{
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -476,7 +476,7 @@ void Agioco_testCharacter::AttackEnd()
 {
 	bAttacking = false;
 	//SetInterpToEnemy(false);
-	if (bLMBDown)
+	if (bLMBDown && !bRoll)
 	{
 		Attack();
 	}
