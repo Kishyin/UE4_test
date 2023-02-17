@@ -73,6 +73,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bRoll = false;
 	bShiftKeyDown = false;
 	bAttacking = false;
+	bSlowTime = false;
 
 
 	
@@ -254,6 +255,8 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &Agioco_testCharacter::LMBDown);
 	PlayerInputComponent->BindAction("LMB", IE_Released, this, &Agioco_testCharacter::LMBUp);
+
+	PlayerInputComponent->BindAction("stop_time", IE_Pressed, this, &Agioco_testCharacter::SlowMotion);
 
 }
 
@@ -494,3 +497,18 @@ void Agioco_testCharacter::PlaySwingSound()
 		UGameplayStatics::PlaySound2D(this, EquippedWeapon->SwingSound);
 	}
 }
+
+
+void Agioco_testCharacter::SlowMotion()
+{
+	bSlowTime = !bSlowTime;
+	if (bSlowTime)
+	{
+		CustomTimeDilation = 5;
+	}
+	else
+	{
+
+	}
+}
+

@@ -184,8 +184,16 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PlaySwingSound();
 
+	UFUNCTION(BlueprintCallable)
+	void SlowMotion();
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "slow_time")
+	bool bSlowTime;
+
+
+
+
+
 
 
 
