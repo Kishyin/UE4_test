@@ -10,7 +10,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Components/SkeletalMeshComponent.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "TimerManager.h"
 #include "Weapon.h"
 
@@ -483,5 +484,13 @@ void Agioco_testCharacter::AttackEnd()
 	if (bLMBDown)
 	{
 		Attack();
+	}
+}
+
+void Agioco_testCharacter::PlaySwingSound()
+{
+	if (EquippedWeapon->SwingSound)
+	{
+		UGameplayStatics::PlaySound2D(this, EquippedWeapon->SwingSound);
 	}
 }

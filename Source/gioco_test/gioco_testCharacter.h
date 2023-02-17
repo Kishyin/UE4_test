@@ -181,6 +181,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anims")
 	bool bAttacking;
 
+	UFUNCTION(BlueprintCallable)
+	void PlaySwingSound();
+
 
 	
 
