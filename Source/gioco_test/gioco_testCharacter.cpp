@@ -505,10 +505,13 @@ void Agioco_testCharacter::SlowMotion()
 	if (bSlowTime)
 	{
 		CustomTimeDilation = 5;
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.1);
+
 	}
 	else
 	{
-
+		CustomTimeDilation = 1;
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1);
 	}
 }
 
