@@ -74,6 +74,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bShiftKeyDown = false;
 	bAttacking = false;
 	bSlowTime = false;
+	bRMBDown = false;
 
 
 	
@@ -257,6 +258,10 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("LMB", IE_Released, this, &Agioco_testCharacter::LMBUp);
 
 	PlayerInputComponent->BindAction("stop_time", IE_Pressed, this, &Agioco_testCharacter::SlowMotion);
+
+	PlayerInputComponent->BindAction("RMB", IE_Pressed, this, &Agioco_testCharacter::RMBDown);
+	PlayerInputComponent->BindAction("RMB", IE_Released, this, &Agioco_testCharacter::RMBUp);
+
 
 }
 
@@ -473,8 +478,16 @@ void Agioco_testCharacter::Attack()
 
 		if (AnimInstance && GeneralMontage)
 		{
-			AnimInstance->Montage_Play(GeneralMontage, 1.2f);
-			AnimInstance->Montage_JumpToSection(FName("attack_1"), GeneralMontage);
+			if (bLMBDown)
+			{
+				AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+				AnimInstance->Montage_JumpToSection(FName("attack_1"), GeneralMontage);
+			}
+			else
+			{
+				AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+				AnimInstance->Montage_JumpToSection(FName("attack_2"), GeneralMontage);
+			}
 		}
 
 	}
@@ -515,3 +528,22 @@ void Agioco_testCharacter::SlowMotion()
 	}
 }
 
+void Agioco_testCharacter::RMBUp()
+{
+	if (bRoll) return;
+	bRMBDown = false;
+}
+
+void Agioco_testCharacter::RMBDown()
+{
+	if (bRoll) return;
+	bRMBDown = true;
+
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+
+	if (EquippedWeapon)
+	{
+		Attack();
+	}
+	else return;
+}

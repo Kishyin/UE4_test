@@ -169,9 +169,14 @@ protected:
 
 	bool bLMBDown;
 
+	bool bRMBDown;
+
 	
 	void LMBDown();
 	void LMBUp();
+
+	void RMBDown();
+	void RMBUp();
 
 	void Attack();
 
