@@ -21,6 +21,8 @@ AEnemy::AEnemy()
 	CombatSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
 	CombatSphere->SetupAttachment(GetRootComponent());
 	CombatSphere->InitSphereRadius(75.f);
+
+	SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
 }
 
 // Called when the game starts or when spawned
@@ -29,7 +31,12 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	AIController = Cast<AAIController>(GetController());
-	
+
+	AgroSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::AgroSphereonOverlapBegin);
+	AgroSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::AgroSphereonOverlapEnd);
+
+	CombatSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::CombatSphereonOverlapBegin);
+	CombatSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::CombatSphereonOverlapEnd);
 }
 
 // Called every frame
@@ -80,7 +87,16 @@ void AEnemy::MoveToTarget(Agioco_testCharacter* Target)
 	SetEnemyMovementStatus(EEnemyMovementStatus::EMS_MoveToTarget);
 	if (AIController)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MoveToTarget()"));
+		//UE_LOG(LogTemp, Warning, TEXT("MoveToTarget()"));
+		//doc AAIController::MoveTo
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalActor(Target);
+		MoveRequest.SetAcceptanceRadius(5.f);
+
+		FNavPathSharedPtr NavPath;
+
+		AIController->MoveTo(MoveRequest, &NavPath);
+
 	}
 }
 
