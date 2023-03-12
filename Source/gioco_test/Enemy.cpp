@@ -20,9 +20,11 @@ AEnemy::AEnemy()
 
 	CombatSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
 	CombatSphere->SetupAttachment(GetRootComponent());
-	CombatSphere->InitSphereRadius(75.f);
+	CombatSphere->InitSphereRadius(200.f);
 
 	SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
+
+	bOverlappingCombatSphere = false;
 }
 
 // Called when the game starts or when spawned
@@ -68,18 +70,51 @@ void AEnemy::AgroSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent, 
 
 void AEnemy::AgroSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-
+	if (OtherActor)
+	{
+		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
+		if (Main)
+		{
+			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
+			if (AIController)
+			{
+				AIController->StopMovement();
+			}
+		}
+	}
 }
 
 
 void AEnemy::CombatSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
+	if (OtherActor)
+	{
+		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
+		if (Main)
+		{
+			CombatTarget = Main;
+			bOverlappingCombatSphere = true;
+			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
+		}
+	}
 }
 
 void AEnemy::CombatSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-
+	if (OtherActor)
+	{
+		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
+		if (Main)
+		{
+			bOverlappingCombatSphere = false;
+			if (EnemyMovementStatus != EEnemyMovementStatus::EMS_Attacking)
+			{
+				MoveToTarget(Main);
+				CombatTarget = nullptr;
+			}
+		}
+	}
 }
 
 void AEnemy::MoveToTarget(Agioco_testCharacter* Target)
@@ -91,11 +126,13 @@ void AEnemy::MoveToTarget(Agioco_testCharacter* Target)
 		//doc AAIController::MoveTo
 		FAIMoveRequest MoveRequest;
 		MoveRequest.SetGoalActor(Target);
-		MoveRequest.SetAcceptanceRadius(5.f);
+		MoveRequest.SetAcceptanceRadius(100.f);
 
 		FNavPathSharedPtr NavPath;
 
 		AIController->MoveTo(MoveRequest, &NavPath);
+
+		//Insert debug sphere code//
 
 	}
 }
