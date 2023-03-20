@@ -10,6 +10,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/BoxComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Enemy.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -23,20 +25,12 @@ AWeapon::AWeapon()
 	CombatCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CombatCollision"));
 	CombatCollision->SetupAttachment(GetRootComponent());
 
-	// This body Will have no representation in the physics engine.It cannot be used for spatial queries(raycasts, sweeps, overlaps) or simulation(rigid body, constraints).This setting gives the best performance possible, especially for moving objects.
-	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	//Set collision type to worldDynamic(object theat can move with some animation)
-	CombatCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
-	//Ignore collision event from other things that are not pawn(our character). The weapon will overlap with the character
-	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+	bWeaponParticle = false;
 
 	WeaponState = EWeaponState::EWS_Pickup;
 
 	Damage = 25.f;
-
-	
-
 }
 
 // Called when the game starts or when spawned
@@ -44,11 +38,14 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// This body Will have no representation in the physics engine.It cannot be used for spatial queries(raycasts, sweeps, overlaps) or simulation(rigid body, constraints).This setting gives the best performance possible, especially for moving objects.
 	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//Set collision type to worldDynamic(object theat can move with some animation)
 	CombatCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	//Ignore collision event from other things that are not pawn(our character). The weapon will overlap with the character
 	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-
+	
 	CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::CombatonOverlapBegin);
 	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::CombatonOverlapEnd);
 
@@ -83,7 +80,22 @@ void AWeapon::onOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 
 void AWeapon::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	if (OtherActor)
+	{
+		AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+		if (Enemy)
+		{
+			if (Enemy->HitParticles)
+			{
+				const USkeletalMeshSocket* WeaponSocket = SkeletalMesh->GetSocketByName("WeaponSocket");
+				if (WeaponSocket)
+				{
+					FVector SocketLocation = WeaponSocket->GetSocketLocation(SkeletalMesh);
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Enemy->HitParticles, SocketLocation, FRotator(0.f), false);
+				}
+			}
+		}
+	}
 }
 
 
