@@ -65,6 +65,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	MinSprintStamina = 50.f;
 	MaxStamina = 150.f;
 	Stamina = 120.f;
+	MaxHealth = 100.f;
+	Health = 100.f;
 
 	bJump = false;
 	bFurtive = false;
