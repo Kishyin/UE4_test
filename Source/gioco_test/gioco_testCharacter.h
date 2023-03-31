@@ -107,6 +107,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PlayerStats")
 	float MaxHealth;
 
+	void DecrementHealth(float Amount);
+	
+	UFUNCTION(BlueprintCallable)
+	void IncrementHealth(float Amount);
+
+	void Die();
+
 protected:
 
 

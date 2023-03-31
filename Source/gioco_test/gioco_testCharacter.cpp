@@ -414,3 +414,33 @@ void Agioco_testCharacter::Furtivity_Mode()
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
 }
+
+void Agioco_testCharacter::DecrementHealth(float Amount)
+{
+	if (Health - Amount <= 0.f)
+	{
+		Health -= Amount;
+		Die();
+	}
+	else
+	{
+		Health -= Amount;
+	}
+}
+
+void Agioco_testCharacter::IncrementHealth(float Amount)
+{
+	if (Health + Amount >= MaxHealth)
+	{
+		Health = MaxHealth;
+	}
+	else
+	{
+		Health += Amount;
+	}
+}
+
+void Agioco_testCharacter::Die()
+{
+
+}
