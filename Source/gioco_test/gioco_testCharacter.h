@@ -204,6 +204,8 @@ protected:
 
 
 
+
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -222,6 +224,12 @@ public:
 	class AWeapon* EquippedWeapon;
 
 	void SetEquippedWeapon(AWeapon* WeaponToSet);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		class UParticleSystem* HitParticles;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		class USoundCue* HitSound;
 
 
 
