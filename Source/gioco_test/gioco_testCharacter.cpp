@@ -10,8 +10,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Components/SkeletalMeshComponent.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "TimerManager.h"
+#include "Weapon.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,6 +72,9 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bFurtive = false;
 	bRoll = false;
 	bShiftKeyDown = false;
+	bAttacking = false;
+	bSlowTime = false;
+	bRMBDown = false;
 
 
 	
@@ -249,6 +254,14 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	
 	PlayerInputComponent->BindAction("furtivity", IE_Pressed, this, &Agioco_testCharacter::Furtivity_Mode);
 
+	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &Agioco_testCharacter::LMBDown);
+	PlayerInputComponent->BindAction("LMB", IE_Released, this, &Agioco_testCharacter::LMBUp);
+
+	PlayerInputComponent->BindAction("stop_time", IE_Pressed, this, &Agioco_testCharacter::SlowMotion);
+
+	PlayerInputComponent->BindAction("RMB", IE_Pressed, this, &Agioco_testCharacter::RMBDown);
+	PlayerInputComponent->BindAction("RMB", IE_Released, this, &Agioco_testCharacter::RMBUp);
+
 
 }
 
@@ -336,6 +349,7 @@ void Agioco_testCharacter::Roll_Start()
 {
 	if (!bRoll && !(GetMovementComponent()->IsFalling()) && (StaminaStatus != EStaminaStatus::ESS_Exhausted) && (StaminaStatus != EStaminaStatus::ESS_ExhaustedRecovering))
 	{
+		bAttacking = false;
 		bRoll = true;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		if (AnimInstance && GeneralMontage)
@@ -411,4 +425,126 @@ void Agioco_testCharacter::Furtivity_Mode()
 	{
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 	}
+}
+
+
+void Agioco_testCharacter::LMBUp()
+{
+	if (bRoll) return;
+	bLMBDown = false;
+}
+
+void Agioco_testCharacter::LMBDown()
+{
+	if (bRoll) return;
+	bLMBDown = true;
+
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+
+
+	if (ActiveOverlappingItem)
+	{
+		AWeapon* Weapon = Cast<AWeapon>(ActiveOverlappingItem);
+		if (Weapon)
+		{
+			Weapon->Equip(this);
+			SetActiveOverlappingItem(nullptr);
+		}
+	}
+	else if (EquippedWeapon)
+	{
+		Attack();
+	}
+
+}
+
+void Agioco_testCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->Destroy();
+	}
+	EquippedWeapon = WeaponToSet;
+}
+
+void Agioco_testCharacter::Attack()
+{
+	if (!bAttacking && MovementStatus != EMovementStatus::EMS_Dead)
+	{
+		bAttacking = true;
+		//SetInterpToEnemy(true);
+
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && GeneralMontage)
+		{
+			if (bLMBDown)
+			{
+				AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+				AnimInstance->Montage_JumpToSection(FName("attack_1"), GeneralMontage);
+			}
+			else
+			{
+				AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+				AnimInstance->Montage_JumpToSection(FName("attack_2"), GeneralMontage);
+			}
+		}
+
+
+	}
+}
+
+void Agioco_testCharacter::AttackEnd()
+{
+	bAttacking = false;
+	//SetInterpToEnemy(false);
+	if (bLMBDown)
+	{
+		Attack();
+	}
+}
+
+void Agioco_testCharacter::PlaySwingSound()
+{
+	if (EquippedWeapon->SwingSound)
+	{
+		UGameplayStatics::PlaySound2D(this, EquippedWeapon->SwingSound);
+	}
+}
+
+
+void Agioco_testCharacter::SlowMotion()
+{
+	bSlowTime = !bSlowTime;
+	if (bSlowTime)
+	{
+		CustomTimeDilation = 5;
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.1);
+
+	}
+	else
+	{
+		CustomTimeDilation = 1;
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1);
+	}
+}
+
+void Agioco_testCharacter::RMBUp()
+{
+	if (bRoll) return;
+	bRMBDown = false;
+}
+
+void Agioco_testCharacter::RMBDown()
+{
+	if (bRoll) return;
+	bRMBDown = true;
+
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+
+	if (EquippedWeapon)
+	{
+		Attack();
+	}
+	else return;
 }

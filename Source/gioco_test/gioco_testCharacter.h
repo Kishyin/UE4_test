@@ -164,12 +164,38 @@ protected:
 
 	FTimerHandle DelayTimer;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items)
+	class AItem* ActiveOverlappingItem;
 
+	bool bLMBDown;
 
-
-
+	bool bRMBDown;
 
 	
+	void LMBDown();
+	void LMBUp();
+
+	void RMBDown();
+	void RMBUp();
+
+	void Attack();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Anims")
+	bool bAttacking;
+
+	UFUNCTION(BlueprintCallable)
+	void PlaySwingSound();
+
+	UFUNCTION(BlueprintCallable)
+	void SlowMotion();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "slow_time")
+	bool bSlowTime;
+
+
 
 
 
@@ -190,5 +216,22 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+
+	FORCEINLINE void SetActiveOverlappingItem(AItem* Item) { ActiveOverlappingItem = Item; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items")
+	class AWeapon* EquippedWeapon;
+
+	void SetEquippedWeapon(AWeapon* WeaponToSet);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		class UParticleSystem* HitParticles;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+		class USoundCue* HitSound;
+
+
+
 };
 
