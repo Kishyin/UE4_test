@@ -429,7 +429,7 @@ void Agioco_testCharacter::Furtivity_Mode()
 	}
 }
 
-<<<<<<< HEAD
+
 
 void Agioco_testCharacter::LMBUp()
 {
@@ -551,7 +551,7 @@ void Agioco_testCharacter::RMBDown()
 	}
 	else return;
 }
-=======
+
 void Agioco_testCharacter::DecrementHealth(float Amount)
 {
 	if (Health - Amount <= 0.f)
@@ -581,4 +581,3 @@ void Agioco_testCharacter::Die()
 {
 
 }
->>>>>>> c21d5574b6134b6edf403c8bbb3be05fd8a73207

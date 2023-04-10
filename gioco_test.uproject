@@ -15,38 +15,8 @@
 	],
 	"Plugins": [
 		{
-<<<<<<< HEAD
 			"Name": "Landmass",
 			"Enabled": true
-=======
-			"Name": "MagicLeap",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Lumin",
-				"Mac",
-				"Win64"
-			]
-		},
-		{
-			"Name": "MagicLeapMedia",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Lumin"
-			]
-		},
-		{
-			"Name": "MagicLeapPassableWorld",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Lumin",
-				"Mac",
-				"Win64"
-			]
-		},
-		{
-			"Name": "Paper2D",
-			"Enabled": false
->>>>>>> c21d5574b6134b6edf403c8bbb3be05fd8a73207
 		},
 		{
 			"Name": "Water",
