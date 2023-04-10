@@ -101,6 +101,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
 	float Stamina;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
+	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PlayerStats")
+	float MaxHealth;
+
+	void DecrementHealth(float Amount);
+	
+	UFUNCTION(BlueprintCallable)
+	void IncrementHealth(float Amount);
+
+	void Die();
+
 protected:
 
 
