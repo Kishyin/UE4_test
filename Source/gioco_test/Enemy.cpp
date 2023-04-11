@@ -31,11 +31,11 @@ AEnemy::AEnemy()
 	CombatSphere->InitSphereRadius(200.f);
 
 	CombatCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CombatCollision"));
-	CombatCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("EnemySocket"));
+	CombatCollision->SetupAttachment(GetMesh(), FName("EnemySocket"));
 
 
 
-	SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
+	EnemyMovementStatus = EEnemyMovementStatus::EMS_Idle;
 
 	bOverlappingCombatSphere = false;
 
