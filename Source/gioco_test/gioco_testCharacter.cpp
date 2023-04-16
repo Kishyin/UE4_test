@@ -79,6 +79,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bRMBDown = false;
 
 
+
 	
 
 	
@@ -558,10 +559,12 @@ void Agioco_testCharacter::DecrementHealth(float Amount)
 	{
 		Health -= Amount;
 		Die();
+		UE_LOG(LogTemp, Warning, TEXT("Hello1"));
 	}
 	else
 	{
 		Health -= Amount;
+		UE_LOG(LogTemp, Warning, TEXT("Hello2"));
 	}
 }
 
@@ -580,4 +583,14 @@ void Agioco_testCharacter::IncrementHealth(float Amount)
 void Agioco_testCharacter::Die()
 {
 
+}
+
+float Agioco_testCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	DecrementHealth(DamageAmount);
+	
+	UE_LOG(LogTemp, Warning, TEXT("Hello3"));
+
+	return DamageAmount;
+	
 }

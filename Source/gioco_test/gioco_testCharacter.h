@@ -108,6 +108,11 @@ public:
 	float MaxHealth;
 
 	void DecrementHealth(float Amount);
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float Damage;
 	
 	UFUNCTION(BlueprintCallable)
 	void IncrementHealth(float Amount);

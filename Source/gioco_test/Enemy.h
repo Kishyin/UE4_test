@@ -55,7 +55,10 @@ public:
 	class UBoxComponent* CombatCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-		class UAnimMontage* Cardinal_God_Montage;
+	class UAnimMontage* Cardinal_God_Montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	TSubclassOf<UDamageType> DamageTypeClass;
 
 
 

@@ -188,6 +188,11 @@ void AEnemy::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 			{
 				UGameplayStatics::PlaySound2D(this, Main->HitSound);
 			}
+			if (DamageTypeClass)
+			{
+				UGameplayStatics::ApplyDamage(Main, Damage, AIController, this, DamageTypeClass);
+				UE_LOG(LogTemp, Warning, TEXT("Hello4"));
+			}
 		}
 	}
 }
