@@ -44,6 +44,10 @@ AEnemy::AEnemy()
 	Damage = 10.f;
 
 	bAttacking = false;
+
+	bHasValidTarget = false;
+
+	EnemyMovementStatus = EEnemyMovementStatus::EMS_Idle;
 }
 
 // Called when the game starts or when spawned
@@ -88,7 +92,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::AgroSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor)
+	if (OtherActor && Alive())
 	{
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
@@ -105,6 +109,7 @@ void AEnemy::AgroSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			bHasValidTarget = false;
 			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
 			if (AIController)
 			{
@@ -118,11 +123,12 @@ void AEnemy::AgroSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 void AEnemy::CombatSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	
-	if (OtherActor)
+	if (OtherActor && Alive())
 	{
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			bHasValidTarget = true;
 			CombatTarget = Main;
 			bOverlappingCombatSphere = true;
 			Attack();
@@ -191,7 +197,7 @@ void AEnemy::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 			if (DamageTypeClass)
 			{
 				UGameplayStatics::ApplyDamage(Main, Damage, AIController, this, DamageTypeClass);
-				UE_LOG(LogTemp, Warning, TEXT("Hello4"));
+
 			}
 		}
 	}
@@ -224,21 +230,24 @@ void AEnemy::DeactivateCollision()
 
 void AEnemy::Attack()
 {
-	if (AIController)
+	if (Alive() && bHasValidTarget)
 	{
-		AIController->StopMovement();
-		SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
-	}
-	if (!bAttacking)
-	{
-		bAttacking = true;
-		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-		if (AnimInstance)
+		if (AIController)
 		{
-			AnimInstance->Montage_Play(Cardinal_God_Montage, 1.f);
-			AnimInstance->Montage_JumpToSection(FName("attack"), Cardinal_God_Montage);
+			AIController->StopMovement();
+			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
 		}
+		if (!bAttacking)
+		{
+			bAttacking = true;
+			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+			if (AnimInstance)
+			{
+				AnimInstance->Montage_Play(Cardinal_God_Montage, 1.f);
+				AnimInstance->Montage_JumpToSection(FName("attack"), Cardinal_God_Montage);
+			}
 
+		}
 	}
 }
 
@@ -250,4 +259,9 @@ void AEnemy::AttackEnd()
 	{
 		Attack();
 	}
+}
+
+bool AEnemy::Alive()
+{
+	return GetEnemyMovementStatus() != EEnemyMovementStatus::EMS_Dead;
 }

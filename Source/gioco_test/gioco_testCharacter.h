@@ -119,6 +119,11 @@ public:
 
 	void Die();
 
+	UFUNCTION(BlueprintCallable)
+	void DeathEnd();
+
+	virtual void Jump() override;
+
 protected:
 
 

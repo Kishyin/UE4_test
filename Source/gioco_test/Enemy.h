@@ -12,6 +12,7 @@ enum class EEnemyMovementStatus : uint8
 	EMS_Idle		 UMETA(DisplayName = "Idle"),
 	EMS_MoveToTarget UMETA(DisplayName = "MoveToTarget"),
 	EMS_Attacking	 UMETA(DisplayName = "Attacking"),
+	EMS_Dead         UMETA(DisplayName = "Dead"),
 
 	EMS_Max			 UMETA(DisplayName = "DefaultMax")
 };
@@ -25,10 +26,14 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
+	bool bHasValidTarget;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	EEnemyMovementStatus EnemyMovementStatus;
 
 	FORCEINLINE void SetEnemyMovementStatus(EEnemyMovementStatus Status) { EnemyMovementStatus = Status; }
+
+	FORCEINLINE EEnemyMovementStatus GetEnemyMovementStatus() { return EnemyMovementStatus; }
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
 	class USphereComponent* AgroSphere;
@@ -117,6 +122,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
+
+	bool Alive();
 
 
 

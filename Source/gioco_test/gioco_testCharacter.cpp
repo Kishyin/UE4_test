@@ -14,6 +14,7 @@
 #include "Sound/SoundCue.h"
 #include "TimerManager.h"
 #include "Weapon.h"
+#include "Enemy.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,7 +78,6 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bAttacking = false;
 	bSlowTime = false;
 	bRMBDown = false;
-
 
 
 	
@@ -319,7 +319,7 @@ void Agioco_testCharacter::LookUpAtRate(float Rate)
 
 void Agioco_testCharacter::MoveForward(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f))
+	if ((Controller != nullptr) && (Value != 0.0f) && (!bAttacking) && (MovementStatus != EMovementStatus::EMS_Dead))
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -333,7 +333,7 @@ void Agioco_testCharacter::MoveForward(float Value)
 
 void Agioco_testCharacter::MoveRight(float Value)
 {
-	if ( (Controller != nullptr) && (Value != 0.0f) )
+	if ( (Controller != nullptr) && (Value != 0.0f) && (!bAttacking) && (MovementStatus != EMovementStatus::EMS_Dead))
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -559,12 +559,12 @@ void Agioco_testCharacter::DecrementHealth(float Amount)
 	{
 		Health -= Amount;
 		Die();
-		UE_LOG(LogTemp, Warning, TEXT("Hello1"));
+		
 	}
 	else
 	{
 		Health -= Amount;
-		UE_LOG(LogTemp, Warning, TEXT("Hello2"));
+
 	}
 }
 
@@ -582,14 +582,50 @@ void Agioco_testCharacter::IncrementHealth(float Amount)
 
 void Agioco_testCharacter::Die()
 {
+	if (MovementStatus == EMovementStatus::EMS_Dead) return;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && GeneralMontage)
+	{
+		AnimInstance->Montage_Play(GeneralMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection(FName("Death"));
+	}
+	SetMovementStatus(EMovementStatus::EMS_Dead);
+}
 
+void Agioco_testCharacter::Jump()
+{
+	if (MovementStatus != EMovementStatus::EMS_Dead)
+	{
+		Super::Jump();
+	}
+}
+
+void Agioco_testCharacter::DeathEnd()
+{
+	GetMesh()->bPauseAnims = true;
+	GetMesh()->bNoSkeletonUpdate = true;
 }
 
 float Agioco_testCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	DecrementHealth(DamageAmount);
-	
-	UE_LOG(LogTemp, Warning, TEXT("Hello3"));
+	if (Health - DamageAmount <= 0.f)
+	{
+		Health -= DamageAmount;
+		Die();
+		if (DamageCauser)
+		{
+			AEnemy* Enemy = Cast < AEnemy>(DamageCauser);
+			if (Enemy)
+			{
+				Enemy->bHasValidTarget = false;
+			}
+		}
+	}
+	else
+	{
+		Health -= DamageAmount;
+	}
 
 	return DamageAmount;
 	
