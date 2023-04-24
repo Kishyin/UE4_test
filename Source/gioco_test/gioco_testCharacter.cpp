@@ -79,6 +79,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bSlowTime = false;
 	bRMBDown = false;
 
+	bHasCombatTarget = false;
+
 
 	
 
