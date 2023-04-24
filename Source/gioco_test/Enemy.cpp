@@ -35,8 +35,6 @@ AEnemy::AEnemy()
 
 
 
-	EnemyMovementStatus = EEnemyMovementStatus::EMS_Idle;
-
 	bOverlappingCombatSphere = false;
 
 	Health = 25.f;
