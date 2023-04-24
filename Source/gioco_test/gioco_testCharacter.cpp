@@ -14,6 +14,8 @@
 #include "Sound/SoundCue.h"
 #include "TimerManager.h"
 #include "Weapon.h"
+#include "kismet/KismetMathLibrary.h"
+#include "Enemy.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,6 +80,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bSlowTime = false;
 	bRMBDown = false;
 
+	InterpSpeed = 15.f;
+	bInterpToEnemy = false;
 
 	
 
@@ -224,7 +228,25 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 			;
 
 		}
+
+		if (bInterpToEnemy && CombatTarget)
+		{
+			FRotator LookAtYaw = GetLookAtRotationYaw(CombatTarget->GetActorLocation());
+			FRotator InterpRotation = FMath::RInterpTo(GetActorRotation(), LookAtYaw, DeltaTime, InterpSpeed);
+
+			SetActorRotation(InterpRotation);
+		}
+
 }
+
+FRotator Agioco_testCharacter::GetLookAtRotationYaw(FVector Target)
+{
+	FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target);
+	FRotator LookAtRotationYaw(0.f, LookAtRotation.Yaw, 0.f);
+	return LookAtRotationYaw;
+}
+
+
 
 void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -475,7 +497,7 @@ void Agioco_testCharacter::Attack()
 	if (!bAttacking && MovementStatus != EMovementStatus::EMS_Dead)
 	{
 		bAttacking = true;
-		//SetInterpToEnemy(true);
+		SetInterpToEnemy(true);
 
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
@@ -580,4 +602,9 @@ void Agioco_testCharacter::IncrementHealth(float Amount)
 void Agioco_testCharacter::Die()
 {
 
+}
+
+void Agioco_testCharacter::SetInterpToEnemy(bool Interp)
+{
+	bInterpToEnemy = Interp;
 }

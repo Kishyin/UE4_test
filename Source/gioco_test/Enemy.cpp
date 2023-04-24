@@ -123,6 +123,7 @@ void AEnemy::CombatSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			Main->SetCombatTarget(this);
 			CombatTarget = Main;
 			bOverlappingCombatSphere = true;
 			Attack();
@@ -137,6 +138,7 @@ void AEnemy::CombatSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, 
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			Main->SetCombatTarget(nullptr);
 			bOverlappingCombatSphere = false;
 			if (EnemyMovementStatus != EEnemyMovementStatus::EMS_Attacking)
 			{
