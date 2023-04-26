@@ -102,6 +102,7 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 
 	float DeltaStamina = StaminaDrainRate * DeltaTime;
 
+
 		switch (StaminaStatus)
 		{
 		case EStaminaStatus::ESS_Normal:
@@ -229,9 +230,9 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 
 		}
 
-		if (bInterpToEnemy && CombatTarget)
+		if (bInterpToEnemy && PointerTarget)
 		{
-			FRotator LookAtYaw = GetLookAtRotationYaw(CombatTarget->GetActorLocation());
+			FRotator LookAtYaw = GetLookAtRotationYaw(PointerTarget->GetActorLocation());
 			FRotator InterpRotation = FMath::RInterpTo(GetActorRotation(), LookAtYaw, DeltaTime, InterpSpeed);
 
 			SetActorRotation(InterpRotation);

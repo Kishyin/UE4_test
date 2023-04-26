@@ -115,6 +115,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat");
+	class UParticleSystemComponent* PointParticles;
+
 
 
 };

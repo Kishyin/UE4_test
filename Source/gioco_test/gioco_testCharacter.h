@@ -253,6 +253,11 @@ public:
 
 	FORCEINLINE void SetCombatTarget(AEnemy* Target) { CombatTarget = Target; }
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	class AEnemy* PointerTarget;
+
+	FORCEINLINE void SetPointerTarget(AEnemy* Target) { PointerTarget = Target; }
+
 	FRotator GetLookAtRotationYaw(FVector Target);
 
 	UFUNCTION(BlueprintCallable)

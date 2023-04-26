@@ -13,6 +13,7 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "Sound/SoundCue.h"
 #include "Animation/AnimInstance.h"
+#include "Particles/ParticleSystemComponent.h"
 
 
 
@@ -32,6 +33,9 @@ AEnemy::AEnemy()
 
 	CombatCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CombatCollision"));
 	CombatCollision->SetupAttachment(GetMesh(), FName("EnemySocket"));
+
+	PointParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("PointParticles"));
+	PointParticles->SetupAttachment(GetMesh());
 
 
 
@@ -93,6 +97,8 @@ void AEnemy::AgroSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent, 
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			PointParticles->Activate();
+			Main->SetPointerTarget(this);
 			MoveToTarget(Main);
 		}
 	}
@@ -105,6 +111,8 @@ void AEnemy::AgroSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			PointParticles->Deactivate();
+			Main->SetPointerTarget(nullptr);
 			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
 			if (AIController)
 			{
