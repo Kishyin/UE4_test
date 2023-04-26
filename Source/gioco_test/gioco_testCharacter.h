@@ -247,7 +247,6 @@ public:
 
 	float InterpSpeed;
 	bool bInterpToEnemy;
-	void SetInterpToEnemy(bool Interp);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	class AEnemy* CombatTarget;
@@ -256,6 +255,8 @@ public:
 
 	FRotator GetLookAtRotationYaw(FVector Target);
 
+	UFUNCTION(BlueprintCallable)
+	void Pointing();
 
 
 };

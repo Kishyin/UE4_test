@@ -286,6 +286,8 @@ void Agioco_testCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("RMB", IE_Pressed, this, &Agioco_testCharacter::RMBDown);
 	PlayerInputComponent->BindAction("RMB", IE_Released, this, &Agioco_testCharacter::RMBUp);
 
+	PlayerInputComponent->BindAction("Point", IE_Pressed, this, &Agioco_testCharacter::Pointing);
+
 
 }
 
@@ -497,7 +499,7 @@ void Agioco_testCharacter::Attack()
 	if (!bAttacking && MovementStatus != EMovementStatus::EMS_Dead)
 	{
 		bAttacking = true;
-		SetInterpToEnemy(true);
+
 
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
@@ -522,7 +524,6 @@ void Agioco_testCharacter::Attack()
 void Agioco_testCharacter::AttackEnd()
 {
 	bAttacking = false;
-	//SetInterpToEnemy(false);
 	if (bLMBDown)
 	{
 		Attack();
@@ -604,7 +605,9 @@ void Agioco_testCharacter::Die()
 
 }
 
-void Agioco_testCharacter::SetInterpToEnemy(bool Interp)
+
+
+void Agioco_testCharacter::Pointing()
 {
-	bInterpToEnemy = Interp;
+	bInterpToEnemy = !bInterpToEnemy;
 }
