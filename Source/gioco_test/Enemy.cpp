@@ -48,6 +48,7 @@ AEnemy::AEnemy()
 	Damage = 10.f;
 
 	bAttacking = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -73,6 +74,8 @@ void AEnemy::BeginPlay()
 	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
+	PointParticles->Deactivate();
+
 }
 
 // Called every frame
@@ -97,7 +100,7 @@ void AEnemy::AgroSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent, 
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
-			PointParticles->Activate();
+			//PointParticles->Activate();
 			Main->SetPointerTarget(this);
 			MoveToTarget(Main);
 		}
@@ -113,6 +116,7 @@ void AEnemy::AgroSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 		{
 			PointParticles->Deactivate();
 			Main->SetPointerTarget(nullptr);
+			Main->bInterpToEnemy = false;
 			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
 			if (AIController)
 			{

@@ -16,6 +16,7 @@
 #include "Weapon.h"
 #include "kismet/KismetMathLibrary.h"
 #include "Enemy.h"
+#include "Particles/ParticleSystemComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -232,6 +233,7 @@ void Agioco_testCharacter::Tick(float DeltaTime)
 
 		if (bInterpToEnemy && PointerTarget)
 		{
+
 			FRotator LookAtYaw = GetLookAtRotationYaw(PointerTarget->GetActorLocation());
 			FRotator InterpRotation = FMath::RInterpTo(GetActorRotation(), LookAtYaw, DeltaTime, InterpSpeed);
 
@@ -609,6 +611,18 @@ void Agioco_testCharacter::Die()
 
 
 void Agioco_testCharacter::Pointing()
-{
-	bInterpToEnemy = !bInterpToEnemy;
+{	
+	if (PointerTarget)
+	{
+		bInterpToEnemy = !bInterpToEnemy;
+		if (bInterpToEnemy==true)
+		{
+			PointerTarget->PointParticles->Activate();
+		}
+		else
+		{
+			PointerTarget->PointParticles->Deactivate();
+			
+		}
+	}
 }
