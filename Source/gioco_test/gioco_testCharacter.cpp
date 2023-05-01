@@ -49,7 +49,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
+	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	// Create a follow camera
@@ -91,7 +91,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 // Input
 void Agioco_testCharacter::Tick(float DeltaTime)
 {
@@ -618,6 +618,7 @@ void Agioco_testCharacter::Pointing()
 		if (bInterpToEnemy==true)
 		{
 			PointerTarget->PointParticles->Activate();
+			
 		}
 		else
 		{
