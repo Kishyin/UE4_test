@@ -84,6 +84,8 @@ Agioco_testCharacter::Agioco_testCharacter()
 	InterpSpeed = 15.f;
 	bInterpToEnemy = false;
 
+	bParry = false;
+
 	
 
 	
@@ -502,6 +504,7 @@ void Agioco_testCharacter::Attack()
 	if (!bAttacking && MovementStatus != EMovementStatus::EMS_Dead)
 	{
 		bAttacking = true;
+		bParry = false;
 
 
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -626,4 +629,30 @@ void Agioco_testCharacter::Pointing()
 			
 		}
 	}
+}
+
+
+
+void Agioco_testCharacter::Parry_Start()
+{
+	
+	if (!bParry)
+	{
+		bParry = true;
+		bAttacking = false;
+		EquippedWeapon->DeactivateCollision();
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		if (AnimInstance && GeneralMontage)
+		{
+			AnimInstance->Montage_Play(GeneralMontage, 1.2f);
+			AnimInstance->Montage_JumpToSection(FName("parry"), GeneralMontage);
+		}
+	}
+
+	
+}
+
+void Agioco_testCharacter::Parry_Stop()
+{
+	bParry = false;
 }

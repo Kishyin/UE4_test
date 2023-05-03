@@ -263,6 +263,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Pointing();
 
+	UFUNCTION(BlueprintCallable)
+	void Parry_Start();
+
+	UFUNCTION(BlueprintCallable)
+	void Parry_Stop();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	bool bParry;
+
 
 };
 
