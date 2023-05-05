@@ -19,7 +19,7 @@
 #include "Particles/ParticleSystemComponent.h"
 
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // Agioco_testCharacter
 
 Agioco_testCharacter::Agioco_testCharacter()
@@ -85,6 +85,7 @@ Agioco_testCharacter::Agioco_testCharacter()
 	bInterpToEnemy = false;
 
 	bParry = false;
+	bBlock = false;
 
 	
 
@@ -640,6 +641,7 @@ void Agioco_testCharacter::Parry_Start()
 	{
 		bParry = true;
 		bAttacking = false;
+		bBlock = false;
 		EquippedWeapon->DeactivateCollision();
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		if (AnimInstance && GeneralMontage)
@@ -655,4 +657,15 @@ void Agioco_testCharacter::Parry_Start()
 void Agioco_testCharacter::Parry_Stop()
 {
 	bParry = false;
+}
+
+
+void Agioco_testCharacter::Parry_frame_start()
+{
+	bBlock = true;
+}
+
+void Agioco_testCharacter::Parry_frame_stop()
+{
+	bBlock = false;
 }

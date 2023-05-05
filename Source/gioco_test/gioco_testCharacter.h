@@ -272,6 +272,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bParry;
 
+	UFUNCTION(BlueprintCallable)
+	void Parry_frame_start();
+
+	UFUNCTION(BlueprintCallable)
+	void Parry_frame_stop();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	bool bBlock;
+
 
 };
 
