@@ -118,6 +118,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat");
 	class UParticleSystemComponent* PointParticles;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	class UParticleSystem* blockParticles;
+
 
 
 };

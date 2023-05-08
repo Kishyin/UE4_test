@@ -189,19 +189,43 @@ void AEnemy::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
-			if (Main->HitParticles)
+			if (Main->bParry == false)
 			{
-				const USkeletalMeshSocket* TipSocket = GetMesh()->GetSocketByName("TipSocket");
-				if (TipSocket)
+				if (Main->HitParticles)
 				{
-					FVector SocketLocation = TipSocket->GetSocketLocation(GetMesh());
-					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Main->HitParticles, SocketLocation, FRotator(0.f), false);
+					const USkeletalMeshSocket* TipSocket = GetMesh()->GetSocketByName("TipSocket");
+					if (TipSocket)
+					{
+						FVector SocketLocation = TipSocket->GetSocketLocation(GetMesh());
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Main->HitParticles, SocketLocation, FRotator(0.f), false);
+					}
+				}
+
+				if (Main->HitSound)
+				{
+					UGameplayStatics::PlaySound2D(this, Main->HitSound);
+				}
+
+
+			}
+			else
+			{
+				if (Main->ParrySound)
+				{
+					UGameplayStatics::PlaySound2D(this, Main->ParrySound);
+				}
+
+				if (Main->blockParticles)
+				{
+					const USkeletalMeshSocket* TipSocket = GetMesh()->GetSocketByName("TipSocket");
+					if (TipSocket)
+					{
+						FVector SocketLocation = TipSocket->GetSocketLocation(GetMesh());
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Main->blockParticles, SocketLocation, FRotator(0.f), false);
+					}
 				}
 			}
-			if (Main->HitSound)
-			{
-				UGameplayStatics::PlaySound2D(this, Main->HitSound);
-			}
+
 		}
 	}
 }

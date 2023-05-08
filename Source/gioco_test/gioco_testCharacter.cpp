@@ -19,7 +19,7 @@
 #include "Particles/ParticleSystemComponent.h"
 
 
-////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 // Agioco_testCharacter
 
 Agioco_testCharacter::Agioco_testCharacter()
@@ -668,4 +668,5 @@ void Agioco_testCharacter::Parry_frame_start()
 void Agioco_testCharacter::Parry_frame_stop()
 {
 	bBlock = false;
+	
 }
