@@ -215,7 +215,7 @@ void AEnemy::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 					UGameplayStatics::PlaySound2D(this, Main->ParrySound);
 				}
 
-				if (Main->blockParticles)
+				/**if (Main->blockParticles)
 				{
 					const USkeletalMeshSocket* TipSocket = GetMesh()->GetSocketByName("TipSocket");
 					if (TipSocket)
@@ -223,7 +223,7 @@ void AEnemy::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 						FVector SocketLocation = TipSocket->GetSocketLocation(GetMesh());
 						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Main->blockParticles, SocketLocation, FRotator(0.f), false);
 					}
-				}
+				}*/
 			}
 
 		}
