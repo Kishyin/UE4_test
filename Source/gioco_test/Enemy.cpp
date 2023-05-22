@@ -8,11 +8,12 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "gioco_testCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Sound/SoundCue.h"
 #include "Animation/AnimInstance.h"
+#include "MainPlayerController.h"
+#include "Components/CapsuleComponent.h"
 
 
 
@@ -108,6 +109,18 @@ void AEnemy::AgroSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 		if (Main)
 		{
 			bHasValidTarget = false;
+			if (Main->CombatTarget == this)
+			{
+				Main->SetCombatTarget(nullptr);
+			}
+			Main->SetHasCombatTarget(false);
+
+			if (Main->MainPlayerController)
+				
+			{
+				Main->MainPlayerController->RemoveEnemyHealthBar();
+			}
+			
 			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
 			if (AIController)
 			{
@@ -126,6 +139,13 @@ void AEnemy::CombatSphereonOverlapBegin(UPrimitiveComponent* OverlappedComponent
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+			
+			Main->SetCombatTarget(this);
+			Main->SetHasCombatTarget(true);
+			if (Main->MainPlayerController)
+			{
+				Main->MainPlayerController->DisplayEnemyHealthBar();
+			}
 			bHasValidTarget = true;
 			CombatTarget = Main;
 			bOverlappingCombatSphere = true;
@@ -141,6 +161,8 @@ void AEnemy::CombatSphereonOverlapEnd(UPrimitiveComponent* OverlappedComponent, 
 		Agioco_testCharacter* Main = Cast<Agioco_testCharacter>(OtherActor);
 		if (Main)
 		{
+		
+
 			bOverlappingCombatSphere = false;
 			if (EnemyMovementStatus != EEnemyMovementStatus::EMS_Attacking)
 			{
