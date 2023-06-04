@@ -103,6 +103,10 @@ void AWeapon::CombatonOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
 			{
 				UGameplayStatics::PlaySound2D(this, Enemy->HitSound);
 			}
+			if (DamageTypeClass)
+			{
+				UGameplayStatics::ApplyDamage(Enemy, Damage, WeaponInstigator, this, DamageTypeClass);
+			}
 		}
 	}
 }
